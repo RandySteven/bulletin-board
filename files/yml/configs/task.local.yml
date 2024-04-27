@@ -1,0 +1,17 @@
+server:
+  host: "0.0.0.0"
+  port: "8080"
+  timeout:
+    server: 30
+    read: 15
+    write: 10
+    idle: 5
+
+#postgresql://bulletindb_owner:lDb07joiaytz@ep-royal-poetry-a5kuitu4:us-east-2:aws:neon:tech/bulletindb?sslmode=require
+
+postgres:
+  host: "ep-royal-poetry-a5kuitu4.us-east-2.aws.neon.tech"
+  port: "5432"
+  dbname: "bulletindb"
+  dbuser: "bulletindb_owner"
+  dbpass: "lDb07joiaytz"
