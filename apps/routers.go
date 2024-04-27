@@ -32,6 +32,12 @@ func NewEndpointRouters(h *Handlers) map[enums.RouterPrefix][]EndpointRouter {
 		*RegisterEndpointRouter("/{id}", http.MethodGet, h.TaskHandler.GetTaskDetailHandler),
 	}
 
+	endpointRouters[enums.RelationRouter] = []EndpointRouter{
+		*RegisterEndpointRouter("", http.MethodPost, h.RelationHandler.AddFriend),
+		*RegisterEndpointRouter("/followers", http.MethodGet, h.RelationHandler.GetAllFollowers),
+		*RegisterEndpointRouter("/followings", http.MethodGet, h.RelationHandler.GetAllFollowings),
+	}
+
 	return endpointRouters
 }
 
@@ -47,14 +53,15 @@ func (h *Handlers) InitRouter(r *mux.Router) {
 	taskRouter := r.PathPrefix(string(enums.TaskRouter)).Subrouter()
 	taskRouter.Use(middlewares.AuthenticationMiddleware)
 	for _, router := range mapRouters[enums.TaskRouter] {
-		//if router.path != "" && router.method != http.MethodGet {
-		//	taskRouter.Use(middlewares.AuthenticationMiddleware)
-		//	taskRouter.HandleFunc(router.path, router.handler).Methods(router.method)
-		//} else {
-		//	taskRouter.HandleFunc(router.path, router.handler).Methods(router.method)
-		//}
 		taskRouter.HandleFunc(router.path, router.handler).Methods(router.method)
 		router.RouterLog(string(enums.TaskRouter))
+	}
+
+	relationRouter := r.PathPrefix(string(enums.RelationRouter)).Subrouter()
+	relationRouter.Use(middlewares.AuthenticationMiddleware)
+	for _, router := range mapRouters[enums.RelationRouter] {
+		relationRouter.HandleFunc(router.path, router.handler).Methods(router.method)
+		router.RouterLog(string(enums.RelationRouter))
 	}
 }
 

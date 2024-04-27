@@ -18,7 +18,12 @@ func (t taskRepository) Save(ctx context.Context, request *models.Task) (result 
 }
 
 func (t taskRepository) FindAll(ctx context.Context) (result []*models.Task, err error) {
-	return utils.FindAll[models.Task](ctx, t.db, queries.SelectAllUser)
+	var task = &models.Task{}
+	result, err = utils.FindAll[models.Task](ctx, t.db, queries.SelectAllTasks, task.ID, task.Title, task.Description, task.Image, task.UserID, task.ExpiredDate, task.CreatedAt, task.UpdatedAt, task.DeletedAt)
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
 }
 
 func (t taskRepository) Find(ctx context.Context, id uint64) (result *models.Task, err error) {

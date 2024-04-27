@@ -13,26 +13,35 @@ type rewardRepository struct {
 	db *sql.DB
 }
 
-func (r rewardRepository) Save(ctx context.Context, request *models.Reward) (result *uint64, err error) {
+func (r *rewardRepository) Save(ctx context.Context, request *models.Reward) (result *uint64, err error) {
 	return utils.Save[models.Reward](ctx, r.db, queries.InsertIntoReward, &request.Name, &request.Description, &request.Image, &request.UserID)
 }
 
-func (r rewardRepository) FindAll(ctx context.Context) (result []*models.Reward, err error) {
+func (r *rewardRepository) FindAll(ctx context.Context) (result []*models.Reward, err error) {
+	var reward = &models.Reward{}
+	result, err = utils.FindAll[models.Reward](ctx, r.db, queries.SelectAllRewards,
+		&reward.ID, &reward.Name, &reward.Description, &reward.Image, &reward.UserID,
+		&reward.CreatedAt, &reward.UpdatedAt, &reward.DeletedAt)
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
+}
+
+func (r *rewardRepository) Find(ctx context.Context, id uint64) (result *models.Reward, err error) {
+	err = utils.FindByID[models.Reward](ctx, r.db, queries.SelectRewardByID, id, result)
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
+}
+
+func (r *rewardRepository) Delete(ctx context.Context, id uint64) (err error) {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (r rewardRepository) Find(ctx context.Context, id uint64) (result *models.Reward, err error) {
-	//TODO implement me
-	panic("implement me")
-}
-
-func (r rewardRepository) Delete(ctx context.Context, id uint64) (err error) {
-	//TODO implement me
-	panic("implement me")
-}
-
-func (r rewardRepository) Update(ctx context.Context, request *models.Reward) (result *models.Reward, err error) {
+func (r *rewardRepository) Update(ctx context.Context, request *models.Reward) (result *models.Reward, err error) {
 	//TODO implement me
 	panic("implement me")
 }
