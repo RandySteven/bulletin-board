@@ -19,9 +19,7 @@ func (r *rewardRepository) Save(ctx context.Context, request *models.Reward) (re
 
 func (r *rewardRepository) FindAll(ctx context.Context) (result []*models.Reward, err error) {
 	var reward = &models.Reward{}
-	result, err = utils.FindAll[models.Reward](ctx, r.db, queries.SelectAllRewards,
-		&reward.ID, &reward.Name, &reward.Description, &reward.Image, &reward.UserID,
-		&reward.CreatedAt, &reward.UpdatedAt, &reward.DeletedAt)
+	result, err = utils.FindAll[models.Reward](ctx, r.db, queries.SelectAllRewards, reward)
 	if err != nil {
 		return nil, err
 	}

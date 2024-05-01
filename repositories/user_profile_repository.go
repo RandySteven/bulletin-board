@@ -29,7 +29,8 @@ func (u *userProfileRepository) Save(ctx context.Context, request *models.UserPr
 }
 
 func (u *userProfileRepository) FindAll(ctx context.Context) (result []*models.UserProfile, err error) {
-	return utils.FindAll[models.UserProfile](ctx, u.db, queries.SelectAllUserProfiles)
+	var userProfile = &models.UserProfile{}
+	return utils.FindAll[models.UserProfile](ctx, u.db, queries.SelectAllUserProfiles, userProfile)
 }
 
 func (u *userProfileRepository) Find(ctx context.Context, id uint64) (result *models.UserProfile, err error) {

@@ -14,7 +14,8 @@ type taskRewardRepository struct {
 }
 
 func (t *taskRewardRepository) FindByTaskId(ctx context.Context, taskId uint64) (result *models.TaskReward, err error) {
-	err = t.db.QueryRowContext(ctx, queries.SelectTaskRewardByTaskID.ToString()).Scan(
+	result = &models.TaskReward{}
+	err = t.db.QueryRowContext(ctx, queries.SelectTaskRewardByTaskID.ToString(), taskId).Scan(
 		&result.ID,
 		&result.TaskID,
 		&result.RewardID,
@@ -23,7 +24,7 @@ func (t *taskRewardRepository) FindByTaskId(ctx context.Context, taskId uint64) 
 	if err != nil {
 		return nil, err
 	}
-	return
+	return result, nil
 }
 
 func (t *taskRewardRepository) Save(ctx context.Context, request *models.TaskReward) (result *uint64, err error) {

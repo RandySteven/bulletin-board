@@ -27,7 +27,7 @@ func Save[T any](ctx context.Context, db *sql.DB, query queries.GoQuery, request
 	return id, nil
 }
 
-func FindAll[T any](ctx context.Context, db *sql.DB, query queries.GoQuery, requests ...any) (result []*T, err error) {
+func FindAll[T any](ctx context.Context, db *sql.DB, query queries.GoQuery, requests *T) (result []*T, err error) {
 	err = QueryValidation(query, selectQuery)
 	if err != nil {
 		return nil, err
@@ -36,10 +36,24 @@ func FindAll[T any](ctx context.Context, db *sql.DB, query queries.GoQuery, requ
 	if err != nil {
 		return nil, err
 	}
-	defer rows.Close()
+
+	typ := reflect.TypeOf(requests).Elem()
+	var ptrs = make([]interface{}, typ.NumField())
+	for i := range ptrs {
+		ptrs[i] = reflect.New(typ.Field(i).Type).Interface()
+	}
 
 	for rows.Next() {
-		rows.Scan(requests...)
+		request := reflect.New(typ).Elem()
+		err := rows.Scan(ptrs...)
+		if err != nil {
+			return nil, err
+		}
+		for i, ptr := range ptrs {
+			field := request.Field(i)
+			field.Set(reflect.ValueOf(ptr).Elem())
+		}
+		result = append(result, request.Addr().Interface().(*T))
 	}
 	return result, nil
 }

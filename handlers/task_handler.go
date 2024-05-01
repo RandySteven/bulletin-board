@@ -54,7 +54,7 @@ func (t *TaskHandler) GetAllTasksHandler(w http.ResponseWriter, r *http.Request)
 		utils.ResponseHandler(w, err.ErrCode(), `failed to get all tasks`, nil, nil, err)
 		return
 	}
-	utils.ResponseHandler(w, http.StatusCreated, `success to create task`, &dataKey, result, nil)
+	utils.ResponseHandler(w, http.StatusOK, `success to create task`, &dataKey, result, nil)
 }
 
 func (t *TaskHandler) GetTaskDetailHandler(w http.ResponseWriter, r *http.Request) {
