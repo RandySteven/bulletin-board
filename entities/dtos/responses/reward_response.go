@@ -1,6 +1,7 @@
 package responses
 
 import (
+	"log"
 	"task_mission/entities/models"
 	"task_mission/enums"
 	"time"
@@ -26,10 +27,10 @@ type (
 			Status      enums.TaskStatus `json:"status"`
 			ExpiredDate time.Time        `json:"expired_date"`
 		} `json:"task"`
-		Categories []CategoryResponse `json:"categories"`
-		CreatedAt  time.Time          `json:"created_at"`
-		UpdatedAt  time.Time          `json:"updated_at"`
-		DeletedAt  *time.Time         `json:"deleted_at"`
+		Categories []*CategoryResponse `json:"categories"`
+		CreatedAt  time.Time           `json:"created_at"`
+		UpdatedAt  time.Time           `json:"updated_at"`
+		DeletedAt  *time.Time          `json:"deleted_at"`
 	}
 
 	RewardListResponse struct {
@@ -44,9 +45,9 @@ type (
 )
 
 func NewRewardDetailResponse(reward *models.Reward, user *models.User, profile *models.UserProfile, task *models.Task, categories []*models.Category) *RewardDetailResponse {
-	categoryResponses := make([]CategoryResponse, 0)
+	var categoryResponses []*CategoryResponse
 	for _, category := range categories {
-		categoryResponses = append(categoryResponses, CategoryResponse{
+		categoryResponses = append(categoryResponses, &CategoryResponse{
 			ID:       category.ID,
 			Category: category.Category,
 		})
@@ -91,6 +92,7 @@ func NewRewardListResponse(reward *models.Reward) *RewardListResponse {
 
 func NewRewardListResponses(rewards []*models.Reward) []*RewardListResponse {
 	result := make([]*RewardListResponse, len(rewards))
+	log.Println("rewards : ", len(rewards))
 	for _, reward := range rewards {
 		response := NewRewardListResponse(reward)
 		result = append(result, response)

@@ -11,5 +11,5 @@ import (
 type IRewardUsecase interface {
 	CreateReward(ctx context.Context, request *requests.CreateRewardRequest) (result *models.Reward, customerr *apperror.CustomError)
 	GetAllRewards(ctx context.Context) (result []*responses.RewardListResponse, customErr *apperror.CustomError)
-	GetRewardByID(ctx context.Context, id uint64) (result *models.Reward, customErr *apperror.CustomError)
+	GetRewardByID(ctx context.Context, id uint64) (result *responses.RewardDetailResponse, customErr *apperror.CustomError)
 }

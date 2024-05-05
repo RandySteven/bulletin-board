@@ -53,11 +53,13 @@ func (r *rewardCategoryRepository) findByConditionId(ctx context.Context, query 
 	if err != nil {
 		return nil, err
 	}
-	defer rows.Close()
 	rewardCategoryList := make([]*models.RewardCategory, 0)
 	for rows.Next() {
 		rewardCategory := &models.RewardCategory{}
-		rows.Scan(rewardCategory.ID, rewardCategory.RewardID, rewardCategory.CategoryID, rewardCategory.CreatedAt, rewardCategory.UpdatedAt, rewardCategory.DeletedAt)
+		err = rows.Scan(&rewardCategory.ID, &rewardCategory.RewardID, &rewardCategory.CategoryID, &rewardCategory.CreatedAt, &rewardCategory.UpdatedAt, &rewardCategory.DeletedAt)
+		if err != nil {
+			return nil, err
+		}
 		rewardCategoryList = append(rewardCategoryList, rewardCategory)
 	}
 	return rewardCategoryList, nil

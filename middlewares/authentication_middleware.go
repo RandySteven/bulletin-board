@@ -3,7 +3,6 @@ package middlewares
 import (
 	"context"
 	"github.com/golang-jwt/jwt/v5"
-	"log"
 	"net/http"
 	"task_mission/enums"
 	"task_mission/pkg/securities"
@@ -34,7 +33,6 @@ func AuthenticationMiddleware(next http.Handler) http.Handler {
 		ctx := context.WithValue(r.Context(), enums.UserID, claims.UserID)
 		ctx2 := context.WithValue(ctx, enums.RoleID, claims.RoleID)
 		r = r.WithContext(ctx2)
-		log.Println(r.Context())
 		next.ServeHTTP(w, r)
 	})
 }

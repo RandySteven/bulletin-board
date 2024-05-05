@@ -37,6 +37,7 @@ func (t *taskRewardRepository) FindAll(ctx context.Context) (result []*models.Ta
 }
 
 func (t *taskRewardRepository) Find(ctx context.Context, id uint64) (result *models.TaskReward, err error) {
+
 	return
 }
 
@@ -48,6 +49,20 @@ func (t *taskRewardRepository) Delete(ctx context.Context, id uint64) (err error
 func (t *taskRewardRepository) Update(ctx context.Context, request *models.TaskReward) (result *models.TaskReward, err error) {
 	//TODO implement me
 	panic("implement me")
+}
+
+func (t *taskRewardRepository) FindByRewardId(ctx context.Context, rewardId uint64) (result *models.TaskReward, err error) {
+	result = &models.TaskReward{}
+	err = t.db.QueryRowContext(ctx, queries.SelectTaskRewardByRewardID.ToString(), rewardId).Scan(
+		&result.ID,
+		&result.TaskID,
+		&result.RewardID,
+		&result.CreatedAt, &result.UpdatedAt, &result.DeletedAt,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
 }
 
 func NewTaskRewardRepository(db *sql.DB) *taskRewardRepository {

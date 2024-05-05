@@ -23,6 +23,7 @@ func (c *categoryRepository) FindAll(ctx context.Context) (result []*models.Cate
 }
 
 func (c *categoryRepository) Find(ctx context.Context, id uint64) (result *models.Category, err error) {
+	result = &models.Category{}
 	err = utils.FindByID[models.Category](ctx, c.db, queries.SelectCategoryByID, id, result)
 	if err != nil {
 		return nil, err
