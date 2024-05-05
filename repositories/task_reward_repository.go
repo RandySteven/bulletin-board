@@ -37,8 +37,7 @@ func (t *taskRewardRepository) FindAll(ctx context.Context) (result []*models.Ta
 }
 
 func (t *taskRewardRepository) Find(ctx context.Context, id uint64) (result *models.TaskReward, err error) {
-	//TODO implement me
-	panic("implement me")
+	return
 }
 
 func (t *taskRewardRepository) Delete(ctx context.Context, id uint64) (err error) {

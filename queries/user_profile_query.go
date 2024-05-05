@@ -21,4 +21,9 @@ const (
 		FROM user_profiles
 		WHERE email = $1
 	`
+	SelectUserProfileByUserID = `
+		SELECT id, email, password, image, user_id, created_at, updated_at, deleted_at
+		FROM user_profiles
+		WHERE user_id = $1
+	`
 )

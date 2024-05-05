@@ -3,7 +3,9 @@ package handlers
 import (
 	"context"
 	"github.com/google/uuid"
+	"github.com/gorilla/mux"
 	"net/http"
+	"strconv"
 	"task_mission/entities/dtos/requests"
 	"task_mission/enums"
 	"task_mission/interfaces/handlers"
@@ -59,6 +61,26 @@ func (t *TaskHandler) GetAllTasksHandler(w http.ResponseWriter, r *http.Request)
 
 func (t *TaskHandler) GetTaskDetailHandler(w http.ResponseWriter, r *http.Request) {
 	utils.ContentType(w, "application/json")
+	var (
+		rID            = uuid.NewString()
+		ctx            = context.WithValue(r.Context(), enums.RequestID, rID)
+		dataKey        = `task`
+		taskId  uint64 = 0
+	)
+	param := mux.Vars(r)
+	taskIdInt, err := strconv.Atoi(param["id"])
+	if err != nil {
+		utils.ResponseHandler(w, http.StatusBadRequest, err.Error(), nil, nil, err)
+		return
+	}
+	taskId = uint64(taskIdInt)
+	result, controllerErr := t.taskUsecase.GetTaskDetail(ctx, taskId)
+	if controllerErr != nil {
+		utils.ResponseHandler(w, controllerErr.ErrCode(), `failed to get all tasks`, nil, nil, controllerErr)
+		return
+	}
+	utils.ResponseHandler(w, http.StatusOK, `success to get task`, &dataKey, result, nil)
+
 }
 
 var _ handlers.ITaskHandler = &TaskHandler{}

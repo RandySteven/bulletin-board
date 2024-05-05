@@ -38,6 +38,13 @@ func NewEndpointRouters(h *Handlers) map[enums.RouterPrefix][]EndpointRouter {
 		*RegisterEndpointRouter("/followings", http.MethodGet, h.RelationHandler.GetAllFollowings),
 	}
 
+	endpointRouters[enums.RewardRouter] = []EndpointRouter{
+		*RegisterEndpointRouter("", http.MethodGet, h.RewardHandler.GetAllRewards),
+		*RegisterEndpointRouter("/{id}", http.MethodGet, h.RewardHandler.GetReward),
+		*RegisterEndpointRouter("/{id}", http.MethodPut, h.RewardHandler.UpdateReward),
+		*RegisterEndpointRouter("/{id}", http.MethodDelete, h.RewardHandler.DeleteReward),
+	}
+
 	return endpointRouters
 }
 
@@ -47,21 +54,28 @@ func (h *Handlers) InitRouter(r *mux.Router) {
 	authRouter := r.PathPrefix(string(enums.AuthRouter)).Subrouter()
 	for _, router := range mapRouters[enums.AuthRouter] {
 		authRouter.HandleFunc(router.path, router.handler).Methods(router.method)
-		router.RouterLog(string(enums.AuthRouter))
+		router.RouterLog(enums.AuthRouter.ToString())
 	}
 
 	taskRouter := r.PathPrefix(string(enums.TaskRouter)).Subrouter()
 	taskRouter.Use(middlewares.AuthenticationMiddleware)
 	for _, router := range mapRouters[enums.TaskRouter] {
 		taskRouter.HandleFunc(router.path, router.handler).Methods(router.method)
-		router.RouterLog(string(enums.TaskRouter))
+		router.RouterLog(enums.TaskRouter.ToString())
 	}
 
 	relationRouter := r.PathPrefix(string(enums.RelationRouter)).Subrouter()
 	relationRouter.Use(middlewares.AuthenticationMiddleware)
 	for _, router := range mapRouters[enums.RelationRouter] {
 		relationRouter.HandleFunc(router.path, router.handler).Methods(router.method)
-		router.RouterLog(string(enums.RelationRouter))
+		router.RouterLog(enums.RelationRouter.ToString())
+	}
+
+	rewardRouter := r.PathPrefix(string(enums.RewardRouter)).Subrouter()
+	rewardRouter.Use(middlewares.AuthenticationMiddleware)
+	for _, router := range mapRouters[enums.RewardRouter] {
+		rewardRouter.HandleFunc(router.path, router.handler).Methods(router.method)
+		router.RouterLog(enums.RewardRouter.ToString())
 	}
 }
 

@@ -3,7 +3,6 @@ package usecases
 import (
 	"context"
 	"fmt"
-	"log"
 	"sync"
 	"task_mission/apperror"
 	"task_mission/entities/dtos/requests"
@@ -20,8 +19,67 @@ type taskUsecase struct {
 	taskRewardRepo     repositories.ITaskRewardRepository
 	rewardCategoryRepo repositories.IRewardCategoryRepository
 	userRepo           repositories.IUserRepository
+	userProfileRepo    repositories.IUserProfileRepository
 	userTaskRepo       repositories.IUserTaskRepository
 	uow                repositories.UnitOfWork
+}
+
+func (t *taskUsecase) GetTaskDetail(ctx context.Context, taskID uint64) (result *responses.TaskDetailResponse, customErr *apperror.CustomError) {
+	var (
+		uID         = ctx.Value(enums.UserID).(uint64)
+		wg          = &sync.WaitGroup{}
+		task        = &models.Task{}
+		reward      = &models.Reward{}
+		taskReward  = &models.TaskReward{}
+		user        = &models.User{}
+		userProfile = &models.UserProfile{}
+		err         error
+		errChan     = make(chan error, 2)
+	)
+	wg.Add(2)
+	go func() {
+		defer wg.Done()
+		user, err = t.userRepo.Find(ctx, uID)
+		if err != nil {
+			errChan <- err
+			return
+		}
+		userProfile, err = t.userProfileRepo.FindByUserID(ctx, user.ID)
+		if err != nil {
+			errChan <- err
+			return
+		}
+	}()
+
+	go func() {
+		defer wg.Done()
+		task, err = t.taskRepo.Find(ctx, taskID)
+		if err != nil {
+			errChan <- err
+			return
+		}
+		taskReward, err = t.taskRewardRepo.FindByTaskId(ctx, taskID)
+		if err != nil {
+			errChan <- err
+			return
+		}
+		reward, err = t.rewardRepo.Find(ctx, taskReward.RewardID)
+		if err != nil {
+			errChan <- err
+			return
+		}
+	}()
+
+	wg.Wait()
+
+	select {
+	case err = <-errChan:
+		return nil, apperror.NewCustomError(apperror.ErrInternalServer, `failed to get reward detail`, err)
+	default:
+		result = responses.NewTaskDetailResponse(task, user, userProfile, reward)
+	}
+
+	return result, nil
 }
 
 func (t *taskUsecase) TakeTask(ctx context.Context, taskID uint64) (result *responses.UserTaskResponse, err error) {
@@ -90,14 +148,7 @@ func (t *taskUsecase) TakeTask(ctx context.Context, taskID uint64) (result *resp
 	if err != nil {
 		return nil, apperror.NewCustomError(apperror.ErrInternalServer, `failed to find user task`, err)
 	}
-	result = &responses.UserTaskResponse{
-		ID:        userTask.ID,
-		TaskID:    userTask.TaskID,
-		UserID:    userTask.UserID,
-		CreatedAt: userTask.CreatedAt,
-		UpdatedAt: userTask.UpdatedAt,
-		DeletedAt: userTask.DeletedAt,
-	}
+	result = responses.NewUserTaskResponse(userTask)
 	return result, nil
 }
 
@@ -206,33 +257,48 @@ func (t *taskUsecase) GetAllTasks(ctx context.Context) (results []*responses.Tas
 	if err != nil {
 		return nil, apperror.NewCustomError(apperror.ErrInternalServer, `failed to get all tasks`, err)
 	}
+	var (
+		wg         sync.WaitGroup
+		user       = &models.User{}
+		reward     = &models.Reward{}
+		taskReward = &models.TaskReward{}
+		errCh      = make(chan error, len(tasks))
+	)
 	for _, task := range tasks {
-		var (
-			//wg         sync.WaitGroup
-			user       = &models.User{}
-			reward     = &models.Reward{}
-			taskReward = &models.TaskReward{}
-			//errCh      = make(chan error)
-		)
-		log.Println("user id : ", task.UserID)
-		user, err = t.userRepo.Find(ctx, task.UserID)
-		if err != nil {
-			return nil, apperror.NewCustomError(apperror.ErrInternalServer, `failed to get user`, err)
-		}
+		wg.Add(1)
 
-		taskReward, err = t.taskRewardRepo.FindByTaskId(ctx, task.ID)
-		if err != nil {
-			return nil, apperror.NewCustomError(apperror.ErrInternalServer, `failed to get task reward`, err)
-		}
-		log.Println("task reward : ", taskReward.RewardID)
-		reward, err = t.rewardRepo.Find(ctx, taskReward.RewardID)
-		if err != nil {
-			return nil, apperror.NewCustomError(apperror.ErrInternalServer, `failed to get reward repo`, err)
-		}
-		result := responses.NewTaskListResponse(task, user, reward)
-		results = append(results, result)
+		go func(task *models.Task) {
+			defer wg.Done()
+			user, err = t.userRepo.Find(ctx, task.UserID)
+			if err != nil {
+				errCh <- err
+				return
+			}
+
+			taskReward, err = t.taskRewardRepo.FindByTaskId(ctx, task.ID)
+			if err != nil {
+				errCh <- err
+				return
+			}
+			reward, err = t.rewardRepo.Find(ctx, taskReward.RewardID)
+			if err != nil {
+				errCh <- err
+				return
+			}
+
+			result := responses.NewTaskListResponse(task, user, reward)
+			results = append(results, result)
+		}(task)
 	}
-	return results, nil
+
+	wg.Wait()
+
+	select {
+	case err = <-errCh:
+		return nil, apperror.NewCustomError(apperror.ErrInternalServer, `failed to get all tasks`, err)
+	default:
+		return results, nil
+	}
 }
 
 func NewTaskUsecase(
@@ -241,6 +307,7 @@ func NewTaskUsecase(
 	rewardCategoryRepo repositories.IRewardCategoryRepository,
 	taskRewardRepo repositories.ITaskRewardRepository,
 	userRepo repositories.IUserRepository,
+	userProfileRepo repositories.IUserProfileRepository,
 	userTaskRepo repositories.IUserTaskRepository,
 	uow repositories.UnitOfWork,
 ) *taskUsecase {
@@ -250,6 +317,7 @@ func NewTaskUsecase(
 		rewardCategoryRepo: rewardCategoryRepo,
 		taskRewardRepo:     taskRewardRepo,
 		userRepo:           userRepo,
+		userProfileRepo:    userProfileRepo,
 		userTaskRepo:       userTaskRepo,
 		uow:                uow,
 	}

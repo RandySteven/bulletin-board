@@ -8,6 +8,7 @@ import (
 	"sync"
 	"task_mission/apperror"
 	"task_mission/entities/dtos/requests"
+	"task_mission/entities/dtos/responses"
 	"task_mission/entities/models"
 	"task_mission/interfaces/repositories"
 	"task_mission/interfaces/usecases"
@@ -126,7 +127,7 @@ func (u *userUsecase) RegisterUser(ctx context.Context, register *requests.UserR
 	return result, nil
 }
 
-func (u *userUsecase) LoginUser(ctx context.Context, login *requests.UserLoginRequest) (result *models.User, customErr *apperror.CustomError) {
+func (u *userUsecase) LoginUser(ctx context.Context, login *requests.UserLoginRequest) (result *responses.UserLoginResponse, customErr *apperror.CustomError) {
 	user, err := u.userProfileRepo.FindByEmail(ctx, login.Email)
 	if err != nil {
 		return nil, apperror.NewCustomError(apperror.ErrNotFound, `email find`, fmt.Errorf(`user is not found`))
@@ -155,8 +156,10 @@ func (u *userUsecase) LoginUser(ctx context.Context, login *requests.UserLoginRe
 	if err != nil {
 		return nil, apperror.NewCustomError(apperror.ErrInternalServer, `failed to generate token`, err)
 	}
-	log.Println(token)
-	return
+	result = &responses.UserLoginResponse{
+		Token: token,
+	}
+	return result, nil
 }
 
 func NewUserUsecase(

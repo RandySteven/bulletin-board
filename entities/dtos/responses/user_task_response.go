@@ -1,6 +1,9 @@
 package responses
 
-import "time"
+import (
+	"task_mission/entities/models"
+	"time"
+)
 
 type UserTaskResponse struct {
 	ID        uint64     `json:"id"`
@@ -9,4 +12,15 @@ type UserTaskResponse struct {
 	CreatedAt time.Time  `json:"created_at"`
 	UpdatedAt time.Time  `json:"updated_at"`
 	DeletedAt *time.Time `json:"deleted_at"`
+}
+
+func NewUserTaskResponse(userTask *models.UserTask) *UserTaskResponse {
+	return &UserTaskResponse{
+		ID:        userTask.ID,
+		TaskID:    userTask.TaskID,
+		UserID:    userTask.UserID,
+		CreatedAt: userTask.CreatedAt.Local(),
+		UpdatedAt: userTask.UpdatedAt.Local(),
+		DeletedAt: userTask.DeletedAt,
+	}
 }

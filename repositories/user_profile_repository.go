@@ -33,6 +33,15 @@ func (u *userProfileRepository) FindAll(ctx context.Context) (result []*models.U
 	return utils.FindAll[models.UserProfile](ctx, u.db, queries.SelectAllUserProfiles, userProfile)
 }
 
+func (u *userProfileRepository) FindByUserID(ctx context.Context, userId uint64) (result *models.UserProfile, err error) {
+	result = &models.UserProfile{}
+	err = utils.FindByID[models.UserProfile](ctx, u.db, queries.SelectUserProfileByUserID, userId, result)
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
+}
+
 func (u *userProfileRepository) Find(ctx context.Context, id uint64) (result *models.UserProfile, err error) {
 
 	//err = utils.FindByID[models.UserProfile](ctx, u.db, queries.SelectUserProfileByID, id)

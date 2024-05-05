@@ -11,7 +11,7 @@ const (
 	`
 
 	SelectTaskByID = `
-		SELECT id, title, description, image, user_id, expired_date, created_at, updated_at, deleted_at
+		SELECT id, title, description, image, status, user_id, expired_date, created_at, updated_at, deleted_at
 		FROM tasks
 		WHERE id = $1
 	`

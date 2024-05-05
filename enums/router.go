@@ -9,6 +9,7 @@ func (r RouterPrefix) ToString() string {
 const (
 	AuthRouter     RouterPrefix = `/auth`
 	UserRouter                  = `/users`
-	TaskRouter                  = `/tasks`
-	RelationRouter              = `/relations`
+	TaskRouter     RouterPrefix = `/tasks`
+	RelationRouter RouterPrefix = `/relations`
+	RewardRouter   RouterPrefix = `/rewards`
 )

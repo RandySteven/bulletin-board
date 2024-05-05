@@ -29,8 +29,12 @@ func (t *taskRepository) FindAll(ctx context.Context) (result []*models.Task, er
 }
 
 func (t *taskRepository) Find(ctx context.Context, id uint64) (result *models.Task, err error) {
-	//utils.FindByID[models.Task](ctx, t.db, queries.SelectTaskByID, id)
-	return
+	result = &models.Task{}
+	err = utils.FindByID[models.Task](ctx, t.db, queries.SelectTaskByID, id, result)
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
 }
 
 func (t *taskRepository) Delete(ctx context.Context, id uint64) (err error) {

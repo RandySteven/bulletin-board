@@ -4,6 +4,7 @@ import (
 	"context"
 	"task_mission/apperror"
 	"task_mission/entities/dtos/requests"
+	"task_mission/entities/dtos/responses"
 	"task_mission/entities/models"
 	"task_mission/interfaces/repositories"
 	"task_mission/interfaces/usecases"
@@ -24,11 +25,12 @@ func (r *rewardUsecase) CreateReward(ctx context.Context, request *requests.Crea
 	panic("implement me")
 }
 
-func (r *rewardUsecase) GetAllRewards(ctx context.Context) (result []*models.Reward, customErr *apperror.CustomError) {
-	result, err := r.rewardRepo.FindAll(ctx)
+func (r *rewardUsecase) GetAllRewards(ctx context.Context) (result []*responses.RewardListResponse, customErr *apperror.CustomError) {
+	rewards, err := r.rewardRepo.FindAll(ctx)
 	if err != nil {
 		return nil, apperror.NewCustomError(apperror.ErrInternalServer, ``, err)
 	}
+	result = responses.NewRewardListResponses(rewards)
 	return result, nil
 }
 
