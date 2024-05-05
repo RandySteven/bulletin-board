@@ -31,6 +31,9 @@ drop:
 test_env:
 	${yaml_file}
 
+env_check:
+	$(ENV)
+
 refresh: drop migration seed
 
 run-docker:
