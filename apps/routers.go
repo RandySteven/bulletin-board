@@ -48,6 +48,7 @@ func NewEndpointRouters(h *Handlers) map[enums.RouterPrefix][]EndpointRouter {
 	endpointRouters[enums.CategoryRouter] = []EndpointRouter{
 		*RegisterEndpointRouter("", http.MethodGet, h.CategoryHandler.GetAllCategories),
 		*RegisterEndpointRouter("/{id}", http.MethodGet, h.CategoryHandler.GetCategory),
+		*RegisterEndpointRouter("", http.MethodPost, h.CategoryHandler.AddCategory),
 	}
 
 	return endpointRouters
