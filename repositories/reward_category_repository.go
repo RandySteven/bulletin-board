@@ -35,8 +35,7 @@ func (r *rewardCategoryRepository) FindAll(ctx context.Context) (result []*model
 }
 
 func (r *rewardCategoryRepository) Find(ctx context.Context, id uint64) (result *models.RewardCategory, err error) {
-	//TODO implement me
-	panic("implement me")
+	return
 }
 
 func (r *rewardCategoryRepository) Delete(ctx context.Context, id uint64) (err error) {
