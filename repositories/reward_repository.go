@@ -27,6 +27,7 @@ func (r *rewardRepository) FindAll(ctx context.Context) (result []*models.Reward
 }
 
 func (r *rewardRepository) Find(ctx context.Context, id uint64) (result *models.Reward, err error) {
+	result = &models.Reward{}
 	err = utils.FindByID[models.Reward](ctx, r.db, queries.SelectRewardByID, id, result)
 	if err != nil {
 		return nil, err

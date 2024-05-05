@@ -229,19 +229,7 @@ func (t *taskUsecase) GetAllTasks(ctx context.Context) (results []*responses.Tas
 		if err != nil {
 			return nil, apperror.NewCustomError(apperror.ErrInternalServer, `failed to get reward repo`, err)
 		}
-		result := &responses.TaskListResponse{
-			ID:          task.ID,
-			Title:       task.Title,
-			Description: task.Description,
-			ExpiryDate:  task.ExpiredDate.String(),
-			UserID:      user.ID,
-			UserName:    user.UserName,
-			RewardID:    reward.ID,
-			Reward:      reward.Name,
-			CreatedAt:   task.CreatedAt,
-			UpdatedAt:   task.UpdatedAt,
-			DeletedAt:   task.DeletedAt,
-		}
+		result := responses.NewTaskListResponse(task, user, reward)
 		results = append(results, result)
 	}
 	return results, nil
