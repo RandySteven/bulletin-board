@@ -33,10 +33,7 @@ func (r *rewardUsecase) GetAllRewards(ctx context.Context) (result []*responses.
 	if err != nil {
 		return nil, apperror.NewCustomError(apperror.ErrInternalServer, ``, err)
 	}
-	for _, reward := range rewards {
-		response := responses.NewRewardListResponse(reward)
-		result = append(result, response)
-	}
+	result = responses.NewRewardListResponses(rewards)
 	return result, nil
 }
 

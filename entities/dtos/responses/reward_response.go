@@ -1,7 +1,6 @@
 package responses
 
 import (
-	"log"
 	"task_mission/entities/models"
 	"task_mission/enums"
 	"time"
@@ -27,10 +26,13 @@ type (
 			Status      enums.TaskStatus `json:"status"`
 			ExpiredDate time.Time        `json:"expired_date"`
 		} `json:"task"`
-		Categories []*CategoryResponse `json:"categories"`
-		CreatedAt  time.Time           `json:"created_at"`
-		UpdatedAt  time.Time           `json:"updated_at"`
-		DeletedAt  *time.Time          `json:"deleted_at"`
+		Categories []*struct {
+			ID       uint64 `json:"id"`
+			Category string `json:"category"`
+		} `json:"categories"`
+		CreatedAt time.Time  `json:"created_at"`
+		UpdatedAt time.Time  `json:"updated_at"`
+		DeletedAt *time.Time `json:"deleted_at"`
 	}
 
 	RewardListResponse struct {
@@ -45,9 +47,15 @@ type (
 )
 
 func NewRewardDetailResponse(reward *models.Reward, user *models.User, profile *models.UserProfile, task *models.Task, categories []*models.Category) *RewardDetailResponse {
-	var categoryResponses []*CategoryResponse
+	var categoryResponses []*struct {
+		ID       uint64 `json:"id"`
+		Category string `json:"category"`
+	}
 	for _, category := range categories {
-		categoryResponses = append(categoryResponses, &CategoryResponse{
+		categoryResponses = append(categoryResponses, &struct {
+			ID       uint64 `json:"id"`
+			Category string `json:"category"`
+		}{
 			ID:       category.ID,
 			Category: category.Category,
 		})
@@ -91,8 +99,7 @@ func NewRewardListResponse(reward *models.Reward) *RewardListResponse {
 }
 
 func NewRewardListResponses(rewards []*models.Reward) []*RewardListResponse {
-	result := make([]*RewardListResponse, len(rewards))
-	log.Println("rewards : ", len(rewards))
+	var result []*RewardListResponse
 	for _, reward := range rewards {
 		response := NewRewardListResponse(reward)
 		result = append(result, response)

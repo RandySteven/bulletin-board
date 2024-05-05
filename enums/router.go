@@ -12,4 +12,5 @@ const (
 	TaskRouter     RouterPrefix = `/tasks`
 	RelationRouter RouterPrefix = `/relations`
 	RewardRouter   RouterPrefix = `/rewards`
+	CategoryRouter RouterPrefix = `/categories`
 )

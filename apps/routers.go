@@ -45,37 +45,49 @@ func NewEndpointRouters(h *Handlers) map[enums.RouterPrefix][]EndpointRouter {
 		*RegisterEndpointRouter("/{id}", http.MethodDelete, h.RewardHandler.DeleteReward),
 	}
 
+	endpointRouters[enums.CategoryRouter] = []EndpointRouter{
+		*RegisterEndpointRouter("", http.MethodGet, h.CategoryHandler.GetAllCategories),
+		*RegisterEndpointRouter("/{id}", http.MethodGet, h.CategoryHandler.GetCategory),
+	}
+
 	return endpointRouters
 }
 
 func (h *Handlers) InitRouter(r *mux.Router) {
 	mapRouters := NewEndpointRouters(h)
 
-	authRouter := r.PathPrefix(string(enums.AuthRouter)).Subrouter()
+	authRouter := r.PathPrefix(enums.AuthRouter.ToString()).Subrouter()
 	for _, router := range mapRouters[enums.AuthRouter] {
 		authRouter.HandleFunc(router.path, router.handler).Methods(router.method)
 		router.RouterLog(enums.AuthRouter.ToString())
 	}
 
-	taskRouter := r.PathPrefix(string(enums.TaskRouter)).Subrouter()
+	taskRouter := r.PathPrefix(enums.TaskRouter.ToString()).Subrouter()
 	taskRouter.Use(middlewares.AuthenticationMiddleware)
 	for _, router := range mapRouters[enums.TaskRouter] {
 		taskRouter.HandleFunc(router.path, router.handler).Methods(router.method)
 		router.RouterLog(enums.TaskRouter.ToString())
 	}
 
-	relationRouter := r.PathPrefix(string(enums.RelationRouter)).Subrouter()
+	relationRouter := r.PathPrefix(enums.RelationRouter.ToString()).Subrouter()
 	relationRouter.Use(middlewares.AuthenticationMiddleware)
 	for _, router := range mapRouters[enums.RelationRouter] {
 		relationRouter.HandleFunc(router.path, router.handler).Methods(router.method)
 		router.RouterLog(enums.RelationRouter.ToString())
 	}
 
-	rewardRouter := r.PathPrefix(string(enums.RewardRouter)).Subrouter()
+	rewardRouter := r.PathPrefix(enums.RewardRouter.ToString()).Subrouter()
 	rewardRouter.Use(middlewares.AuthenticationMiddleware)
 	for _, router := range mapRouters[enums.RewardRouter] {
 		rewardRouter.HandleFunc(router.path, router.handler).Methods(router.method)
 		router.RouterLog(enums.RewardRouter.ToString())
+	}
+
+	categoriesRouter := r.PathPrefix(enums.CategoryRouter.ToString()).Subrouter()
+	categoriesRouter.Use(middlewares.AuthenticationMiddleware)
+	for _, router := range mapRouters[enums.CategoryRouter] {
+		categoriesRouter.HandleFunc(router.path, router.handler).Methods(router.method)
+		router.RouterLog(enums.CategoryRouter.ToString())
 	}
 }
 

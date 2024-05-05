@@ -18,8 +18,12 @@ func (c *categoryRepository) Save(ctx context.Context, request *models.Category)
 }
 
 func (c *categoryRepository) FindAll(ctx context.Context) (result []*models.Category, err error) {
-	//TODO implement me
-	panic("implement me")
+	category := &models.Category{}
+	result, err = utils.FindAll[models.Category](ctx, c.db, queries.SelectAllCategories, category)
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
 }
 
 func (c *categoryRepository) Find(ctx context.Context, id uint64) (result *models.Category, err error) {
