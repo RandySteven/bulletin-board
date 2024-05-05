@@ -1,0 +1,27 @@
+version: "2"
+
+networks:
+  app-network:
+    driver: bridge
+
+services:
+  bulletin-app:
+    image: bulletin-app
+    ports:
+      - 8888:8888
+    build:
+      dockerfile: Dockerfile
+    networks:
+      - app-network
+    depends_on:
+      - bulletin-postgres
+  bulletin-postgres:
+    image: postgres:latest
+    container_name: postgres_bulletin
+    restart: unless-stopped
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_PASSWORD=xixixi
+      - POSTGRES_USER=orangganteng
+      - POSTGRES_DB=bulletindb
