@@ -6,6 +6,7 @@ import (
 	"github.com/gorilla/mux"
 	"net/http"
 	"strconv"
+	"task_mission/entities/dtos/requests"
 	"task_mission/enums"
 	"task_mission/interfaces/handlers"
 	"task_mission/interfaces/usecases"
@@ -17,7 +18,18 @@ type CategoryHandler struct {
 }
 
 func (c *CategoryHandler) AddCategory(w http.ResponseWriter, r *http.Request) {
-	panic("implement me")
+	utils.ContentType(w, "application/json")
+	var (
+		rID     = uuid.NewString()
+		ctx     = context.WithValue(r.Context(), enums.RequestID, rID)
+		request = &requests.CategoryRequest{}
+		dataKey = `category`
+	)
+	result, customErr := c.usecase.CreateCategory(ctx, request)
+	if customErr != nil {
+		utils.ResponseHandler(w, customErr.ErrCode(), `failed to create category`, nil, nil, customErr)
+	}
+	utils.ResponseHandler(w, http.StatusCreated, `success create category`, &dataKey, result, nil)
 }
 
 func (c *CategoryHandler) GetAllCategories(w http.ResponseWriter, r *http.Request) {
