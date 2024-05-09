@@ -41,3 +41,15 @@ run-docker:
 
 stop-docker:
 	docker compose down
+
+MODEL_NAME := $(shell bash -c 'read -p "Model name : " modelfile; echo $$modelfile')
+LOWER_FIRST_CHAR := $(shell echo $(MODELNAME) | cut -c1 | tr '[:upper:]' '[:lower:]')
+UPPER_FIRST_CHAR := $(shell echo $(MODELNAME) | cut -c1)
+MODEL_FILE := $(subst $(UPPER_FIRST_CHAR),$(LOWER_FIRST_CHAR),$(MODEL_NAME))
+PACKAGE_MODEL := "package models"
+INIT_MODEL := "type $(MODEL_NAME) struct {}"
+MODEL_PATH := "entities/models/$(MODEL_FILE).go"
+COMMAND_MODEL := "$(PACKAGE_MODEL)\n\n$(INIT_MODEL)" > $(MODEL_PATH)
+
+make_model:
+	@echo $(COMMAND_MODEL)

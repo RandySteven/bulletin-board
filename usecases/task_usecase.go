@@ -11,6 +11,7 @@ import (
 	"task_mission/enums"
 	"task_mission/interfaces/repositories"
 	"task_mission/interfaces/usecases"
+	"task_mission/pkg/firebases"
 )
 
 type taskUsecase struct {
@@ -21,6 +22,7 @@ type taskUsecase struct {
 	userRepo           repositories.IUserRepository
 	userProfileRepo    repositories.IUserProfileRepository
 	userTaskRepo       repositories.IUserTaskRepository
+	firebaseConf       firebases.Firebase
 	uow                repositories.UnitOfWork
 }
 
@@ -36,6 +38,7 @@ func (t *taskUsecase) GetTaskDetail(ctx context.Context, taskID uint64) (result 
 		err         error
 		errChan     = make(chan error, 2)
 	)
+	t.firebaseConf.Store(ctx, "")
 	wg.Add(2)
 	go func() {
 		defer wg.Done()

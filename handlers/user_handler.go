@@ -43,13 +43,13 @@ func (u *UserHandler) RegisterHandler(w http.ResponseWriter, r *http.Request) {
 func (u *UserHandler) LoginHandler(w http.ResponseWriter, r *http.Request) {
 	utils.ContentType(w, "application/json")
 	var (
-		request *requests.UserLoginRequest
+		request = &requests.UserLoginRequest{}
 		rID     = uuid.NewString()
 		ctx     = context.WithValue(r.Context(), enums.RequestID, rID)
 		dataKey = `user`
 	)
 
-	if err := utils.BindJSON(r, &request); err != nil {
+	if err := utils.BindForm(r, request); err != nil {
 		utils.ResponseHandler(w, http.StatusBadRequest, err.Error(), nil, nil, err)
 		return
 	}

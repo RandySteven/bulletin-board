@@ -25,3 +25,5 @@ services:
       - POSTGRES_PASSWORD=xixixi
       - POSTGRES_USER=orangganteng
       - POSTGRES_DB=bulletindb
+  bulletin-migration:
+    image: bulletin-migration

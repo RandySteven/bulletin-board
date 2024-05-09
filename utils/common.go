@@ -2,6 +2,7 @@ package utils
 
 import (
 	"fmt"
+	"reflect"
 	"time"
 )
 
@@ -19,4 +20,14 @@ func StringToDate(dateStr string) (time.Time, error) {
 
 func HashImageFile(imageFile string) string {
 	return imageFile
+}
+
+func GetFieldsOfObject(object interface{}) []string {
+	fields := []string{}
+	typ := reflect.TypeOf(object).Elem()
+	for i := 0; i < typ.NumField(); i++ {
+		field := typ.Field(i).Name
+		fields = append(fields, field)
+	}
+	return fields
 }
