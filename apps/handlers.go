@@ -14,7 +14,7 @@ type Handlers struct {
 	CategoryHandler handlers.ICategoryHandler
 }
 
-func NewHandlers(repo *db.Repositories) *Handlers {
+func NewHandlers(repo *db.Repositories, service *Services) *Handlers {
 	usecases := NewUseCases(repo)
 	return &Handlers{
 		UserHandler:     handlers2.NewUserHandler(usecases.UserUsecase),

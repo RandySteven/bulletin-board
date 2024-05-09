@@ -6,9 +6,15 @@ import (
 	"os"
 )
 
-type FirebaseConf struct {
-	app *firebase.App
-}
+type (
+	Firebase interface {
+		Store(ctx context.Context, path string) error
+	}
+
+	FirebaseConf struct {
+		app *firebase.App
+	}
+)
 
 func NewFirebaseConf(ctx context.Context) (*FirebaseConf, error) {
 	app, err := firebase.NewApp(ctx, nil)

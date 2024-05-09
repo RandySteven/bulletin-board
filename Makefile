@@ -7,7 +7,7 @@ cmd_folder = ./cmd/task_mission/
 gorun = @go run
 
 ifeq ($(ENV),prod)
-
+	yaml_file = ./files/yml/configs/task.prod.yml
 else ifeq ($(ENV),staging)
 	yaml_file = ./files/yml/configs/task.docker.yml
 else ifeq ($(ENV),dev)
