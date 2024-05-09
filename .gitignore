@@ -1,0 +1,7 @@
+.idea
+go.mod
+go.sum
+.vscode
+
+.env
+task.local.yml
