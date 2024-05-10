@@ -3,7 +3,10 @@ package utils
 import (
 	"context"
 	"database/sql"
+	"fmt"
+	"log"
 	"reflect"
+	"strings"
 	"task_mission/queries"
 )
 
@@ -71,6 +74,8 @@ func Delete[T any](ctx context.Context, db *sql.DB, query queries.GoQuery, id ui
 }
 
 func FindByID[T any](ctx context.Context, db *sql.DB, query queries.GoQuery, id uint64, result *T) error {
+	log.Println(strings.ReplaceAll(query.ToString(), "$1", fmt.Sprintf("%d", id)))
+
 	err := QueryValidation(query, selectQuery)
 	if err != nil {
 		return err

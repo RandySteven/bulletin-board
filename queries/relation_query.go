@@ -8,6 +8,12 @@ const (
 		RETURNING id
 	`
 
+	SelectRelationByID GoQuery = `
+	SELECT id, user_id, friend_id, status, created_at, updated_at, deleted_at
+			FROM relations
+			WHERE id = $1
+`
+
 	SelectUserRelations GoQuery = `SELECT id, user_id, friend_id, status, created_at, updated_at, deleted_at
 		FROM relations
 		WHERE user_id = $1
@@ -26,14 +32,14 @@ const (
 	SelectAllRelations GoQuery = `SELECT id, user_id, friend_id, status, created_at, updated_at, deleted_at FROM relations`
 
 	SelectFollowingRelations GoQuery = `
-	SELECT id, user_id, friend_id, status, created_at, updated_at, deleted_at
-	FROM relations
-	WHERE user_id = $1
+		SELECT id, user_id, friend_id, status, created_at, updated_at, deleted_at
+		FROM relations
+		WHERE user_id = $1
 	`
 
 	SelectFollowersRelations GoQuery = `
-	SELECT id, user_id, friend_id, status, created_at, updated_at, deleted_at
-	FROM relations
-	WHERE friend_id = $1
+		SELECT id, user_id, friend_id, status, created_at, updated_at, deleted_at
+		FROM relations
+		WHERE friend_id = $1
 	`
 )

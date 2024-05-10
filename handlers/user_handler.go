@@ -49,7 +49,7 @@ func (u *UserHandler) LoginHandler(w http.ResponseWriter, r *http.Request) {
 		dataKey = `user`
 	)
 
-	if err := utils.BindForm(r, request); err != nil {
+	if err := utils.BindJSON(r, request); err != nil {
 		utils.ResponseHandler(w, http.StatusBadRequest, err.Error(), nil, nil, err)
 		return
 	}

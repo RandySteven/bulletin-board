@@ -25,6 +25,7 @@ type Repositories struct {
 	UserCreditRepository     repositories.IUserCreditRepository
 	UserTaskRepository       repositories.IUserTaskRepository
 	RelationRepository       repositories.IRelationRepository
+	CreditRepository         repositories.ICreditRepository
 	UnitOfWork               repositories.UnitOfWork
 	db                       *sql.DB
 }
@@ -63,6 +64,7 @@ func NewRepositories(config *config.Config) (*Repositories, error) {
 		UserRoleRepository:       repositories2.NewUserRoleRepository(db),
 		UserTaskRepository:       repositories2.NewUserTaskRepository(db),
 		RelationRepository:       repositories2.NewRelationRepository(db),
+		CreditRepository:         repositories2.NewCreditRepository(db),
 		UnitOfWork:               repositories2.NewUnitOfWork(db),
 		db:                       db,
 	}, nil

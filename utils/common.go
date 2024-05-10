@@ -3,6 +3,7 @@ package utils
 import (
 	"fmt"
 	"reflect"
+	"task_mission/entities/models"
 	"time"
 )
 
@@ -30,4 +31,12 @@ func GetFieldsOfObject(object interface{}) []string {
 		fields = append(fields, field)
 	}
 	return fields
+}
+
+func CreditsAverage(credits []*models.Credit) float32 {
+	creditSum := float32(0)
+	for _, credit := range credits {
+		creditSum += credit.Credit
+	}
+	return creditSum / float32(len(credits))
 }

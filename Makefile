@@ -41,23 +41,22 @@ run-docker:
 
 stop-docker:
 	docker compose down
-
-MODELNAME := $(shell bash -c 'read -p "Model name : " modelfile; echo $$modelfile')
-LOWER_FIRST_CHAR := $(shell echo $(MODELNAME) | cut -c1 | tr '[:upper:]' '[:lower:]')
-UPPER_FIRST_CHAR := $(shell echo $(MODELNAME) | cut -c1 )
-MODELFILE := $(subst $(UPPER_FIRST_CHAR),$(LOWER_FIRST_CHAR),$(MODELNAME))
-REPOSITORYFILE := "$(MODELFILE)_repository.go"
-PACKAGE_MODEL := "package models"
-PACKAGE_REPOSITORY := package repositories
-IMPORT_MODEL_PACKAGE := import(\n"\"task_mission/entities/models\""\n)
-INIT_MODEL := "type $(MODELNAME) struct {}"
-INIT_REPOSITORY_INTERFACE := type I$(MODELNAME)Repository interface{\nIRepository[models.$(MODELNAME)]\n}
-
-make_model:
-	@echo "$(PACKAGE_MODEL)\n\n$(INIT_MODEL)" > "entities/models/$(MODELFILE).go"
-
-make_repository:
-	@echo "$(PACKAGE_REPOSITORY)\n\n$(IMPORT_MODEL_PACKAGE)\n\n$(INIT_REPOSITORY_INTERFACE)" > "interfaces/repositories/$(MODELFILE)_repository.go"
-
-make_model_repo: make_model make_repository
-
+#
+#MODELNAME := $(shell bash -c 'read -p "Model name : " modelfile; echo $$modelfile')
+#LOWER_FIRST_CHAR := $(shell echo $(MODELNAME) | cut -c1 | tr '[:upper:]' '[:lower:]')
+#UPPER_FIRST_CHAR := $(shell echo $(MODELNAME) | cut -c1 )
+#MODELFILE := $(subst $(UPPER_FIRST_CHAR),$(LOWER_FIRST_CHAR),$(MODELNAME))
+#REPOSITORYFILE := "$(MODELFILE)_repository.go"
+#PACKAGE_MODEL := "package models"
+#PACKAGE_REPOSITORY := package repositories
+#IMPORT_MODEL_PACKAGE := import(\n"\"task_mission/entities/models\""\n)
+#INIT_MODEL := "type $(MODELNAME) struct {}"
+#INIT_REPOSITORY_INTERFACE := type I$(MODELNAME)Repository interface{\nIRepository[models.$(MODELNAME)]\n}
+#
+#make_model:
+#	@echo "$(PACKAGE_MODEL)\n\n$(INIT_MODEL)" > "entities/models/$(MODELFILE).go"
+#
+#make_repository:
+#	@echo "$(PACKAGE_REPOSITORY)\n\n$(IMPORT_MODEL_PACKAGE)\n\n$(INIT_REPOSITORY_INTERFACE)" > "interfaces/repositories/$(MODELFILE)_repository.go"
+#
+#make_model_repo: make_model make_repository

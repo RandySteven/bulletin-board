@@ -24,7 +24,7 @@ func (u *userRepository) FindAll(ctx context.Context) (result []*models.User, er
 
 func (u *userRepository) Find(ctx context.Context, id uint64) (result *models.User, err error) {
 	result = &models.User{}
-	err = utils.FindByID(ctx, u.db, queries.SelectUserByID, id, result)
+	err = utils.FindByID[models.User](ctx, u.db, queries.SelectUserByID, id, result)
 	if err != nil {
 		return nil, err
 	}
