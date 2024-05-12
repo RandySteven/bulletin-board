@@ -67,8 +67,23 @@ func (c *creditUsecase) SeeUserCredit(ctx context.Context, userId uint64) (respo
 }
 
 func (c *creditUsecase) SeeAllCredits(ctx context.Context) (result []*responses.UserCreditResponse, customErr *apperror.CustomError) {
-	//TODO implement me
-	panic("implement me")
+	credits, err := c.creditRepository.FindAll(ctx)
+	if err != nil {
+		return nil, apperror.NewCustomError(apperror.ErrInternalServer, `failed to get user credits`, err)
+	}
+	creditMap := make(map[uint64][]*models.Credit)
+	for _, credit := range credits {
+		creditMap[credit.ToID] = append(creditMap[credit.ToID], credit)
+	}
+	for toID, credits := range creditMap {
+		creditAvg := utils.CreditsAverage(credits)
+		response := &responses.UserCreditResponse{
+			UserID: toID,
+			Credit: creditAvg,
+		}
+		result = append(result, response)
+	}
+	return result, nil
 }
 
 var _ usecases.ICreditUseCase = &creditUsecase{}

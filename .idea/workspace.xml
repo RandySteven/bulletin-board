@@ -6,14 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="55113090-76c4-41a1-8d86-c4c4c7dc1d85" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/handlers.go" beforeDir="false" afterPath="$PROJECT_DIR$/apps/handlers.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/routers.go" beforeDir="false" afterPath="$PROJECT_DIR$/apps/routers.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/usecases.go" beforeDir="false" afterPath="$PROJECT_DIR$/apps/usecases.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/entities/models/credit.go" beforeDir="false" afterPath="$PROJECT_DIR$/entities/models/credit.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/handlers/credit_handler.go" beforeDir="false" afterPath="$PROJECT_DIR$/handlers/credit_handler.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/queries/credit_query.go" beforeDir="false" afterPath="$PROJECT_DIR$/queries/credit_query.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/repositories/credit_repository.go" beforeDir="false" afterPath="$PROJECT_DIR$/repositories/credit_repository.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/repositories/user_credit_repository.go" beforeDir="false" afterPath="$PROJECT_DIR$/repositories/user_credit_repository.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/usecases/credit_usecase.go" beforeDir="false" afterPath="$PROJECT_DIR$/usecases/credit_usecase.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

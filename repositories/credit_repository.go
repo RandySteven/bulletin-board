@@ -42,8 +42,11 @@ func (c *creditRepository) Save(ctx context.Context, request *models.Credit) (re
 }
 
 func (c *creditRepository) FindAll(ctx context.Context) (result []*models.Credit, err error) {
-	//TODO implement me
-	panic("implement me")
+	result, err = utils.FindAll[models.Credit](ctx, c.db, queries.SelectAllCredits)
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
 }
 
 func (c *creditRepository) Find(ctx context.Context, id uint64) (result *models.Credit, err error) {

@@ -41,12 +41,24 @@ func (c *CreditHandler) SeeUserCredit(w http.ResponseWriter, r *http.Request) {
 		ctx     = context.WithValue(r.Context(), enums.RequestID, rID)
 		dataKey = `credits`
 	)
-	uId, err := strconv.Atoi(r.URL.Query().Get(`userId`))
+	userIdStr := r.URL.Query().Get(`userId`)
+	if userIdStr == `` {
+		result, customErr := c.creditUsecase.SeeAllCredits(ctx)
+		if customErr != nil {
+			utils.ResponseHandler(w, customErr.ErrCode(), `internal_error`, nil, nil, customErr)
+			return
+		}
+		utils.ResponseHandler(w, http.StatusOK, `success submit credit`, &dataKey, result, nil)
+		return
+	}
+	uId, err := strconv.Atoi(userIdStr)
 	if err != nil {
 		utils.ResponseHandler(w, http.StatusBadRequest, `invalid_json`, nil, nil, err)
 		return
 	}
 	userId := uint64(uId)
+	//if userId == 0 {
+	//}
 	result, customErr := c.creditUsecase.SeeUserCredit(ctx, userId)
 	if customErr != nil {
 		utils.ResponseHandler(w, customErr.ErrCode(), `internal_error`, nil, nil, customErr)

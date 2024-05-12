@@ -18,4 +18,14 @@ const (
 		FROM credits
 		WHERE id = $1
 	`
+
+	SelectAllCredits GoQuery = `
+		SELECT id, from_id, to_id, credit, description, created_at, updated_at, deleted_at
+		FROM credits 
+	`
+
+	SelectListAvgUserCredits GoQuery = `
+		SELECT to_id, AVG(credit) FROM credits
+		GROUP BY to_id
+	`
 )
