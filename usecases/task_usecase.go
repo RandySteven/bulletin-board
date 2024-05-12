@@ -38,7 +38,7 @@ func (t *taskUsecase) GetTaskDetail(ctx context.Context, taskID uint64) (result 
 		err         error
 		errChan     = make(chan error, 2)
 	)
-	t.firebaseConf.Store(ctx, "")
+	//t.firebaseConf.Store(ctx, "")
 	wg.Add(2)
 	go func() {
 		defer wg.Done()

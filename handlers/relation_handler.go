@@ -68,6 +68,9 @@ func (rh *RelationHandler) GetAllFriends(w http.ResponseWriter, r *http.Request)
 	panic("implement me")
 }
 
+func (rh *RelationHandler) FollowBack(w http.ResponseWriter, r *http.Request) {
+}
+
 func (rh *RelationHandler) GetFriendWithUserID(w http.ResponseWriter, r *http.Request) {
 	//TODO implement me
 	panic("implement me")

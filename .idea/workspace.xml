@@ -5,24 +5,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="55113090-76c4-41a1-8d86-c4c4c7dc1d85" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/usecases.go" beforeDir="false" afterPath="$PROJECT_DIR$/apps/usecases.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/entities/dtos/responses/friend_response.go" beforeDir="false" afterPath="$PROJECT_DIR$/entities/dtos/responses/friend_response.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/entities/models/credit.go" beforeDir="false" afterPath="$PROJECT_DIR$/entities/models/credit.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/enums/relation_status.go" beforeDir="false" afterPath="$PROJECT_DIR$/enums/relation_status.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/handlers/credit_handler.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/entities/dtos/requests/credit_request.go" beforeDir="false" afterPath="$PROJECT_DIR$/entities/dtos/requests/credit_request.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/enums/router.go" beforeDir="false" afterPath="$PROJECT_DIR$/enums/router.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/handlers/relation_handler.go" beforeDir="false" afterPath="$PROJECT_DIR$/handlers/relation_handler.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/handlers/user_handler.go" beforeDir="false" afterPath="$PROJECT_DIR$/handlers/user_handler.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/interfaces/repositories/credit_repository.go" beforeDir="false" afterPath="$PROJECT_DIR$/interfaces/repositories/credit_repository.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/interfaces/repositories/relation_repository.go" beforeDir="false" afterPath="$PROJECT_DIR$/interfaces/repositories/relation_repository.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/interfaces/usecases/relation_usecase.go" beforeDir="false" afterPath="$PROJECT_DIR$/interfaces/usecases/relation_usecase.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/db/db.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/db/db.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/queries/credit_query.go" beforeDir="false" afterPath="$PROJECT_DIR$/queries/credit_query.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/queries/relation_query.go" beforeDir="false" afterPath="$PROJECT_DIR$/queries/relation_query.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/queries/user_credit_query.go" beforeDir="false" afterPath="$PROJECT_DIR$/queries/user_credit_query.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/handlers/task_handler.go" beforeDir="false" afterPath="$PROJECT_DIR$/handlers/task_handler.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/interfaces/handlers/relation_handler.go" beforeDir="false" afterPath="$PROJECT_DIR$/interfaces/handlers/relation_handler.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/interfaces/usecases/credit_usecase.go" beforeDir="false" afterPath="$PROJECT_DIR$/interfaces/usecases/credit_usecase.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/repositories/category_repository.go" beforeDir="false" afterPath="$PROJECT_DIR$/repositories/category_repository.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/repositories/credit_repository.go" beforeDir="false" afterPath="$PROJECT_DIR$/repositories/credit_repository.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/repositories/relation_repository.go" beforeDir="false" afterPath="$PROJECT_DIR$/repositories/relation_repository.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/repositories/reward_category_repository.go" beforeDir="false" afterPath="$PROJECT_DIR$/repositories/reward_category_repository.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/repositories/reward_repository.go" beforeDir="false" afterPath="$PROJECT_DIR$/repositories/reward_repository.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/repositories/task_repository.go" beforeDir="false" afterPath="$PROJECT_DIR$/repositories/task_repository.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/repositories/user_profile_repository.go" beforeDir="false" afterPath="$PROJECT_DIR$/repositories/user_profile_repository.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/repositories/user_repository.go" beforeDir="false" afterPath="$PROJECT_DIR$/repositories/user_repository.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/usecases/credit_usecase.go" beforeDir="false" afterPath="$PROJECT_DIR$/usecases/credit_usecase.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/usecases/relation_usecase.go" beforeDir="false" afterPath="$PROJECT_DIR$/usecases/relation_usecase.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/usecases/task_usecase.go" beforeDir="false" afterPath="$PROJECT_DIR$/usecases/task_usecase.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/utils/common.go" beforeDir="false" afterPath="$PROJECT_DIR$/utils/common.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/utils/query.go" beforeDir="false" afterPath="$PROJECT_DIR$/utils/query.go" afterDir="false" />
     </list>
@@ -54,23 +55,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "DefaultGoTemplateProperty": "Go File",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.go.formatter.settings.were.checked": "true",
-    "RunOnceActivity.go.migrated.go.modules.settings": "true",
-    "RunOnceActivity.go.modules.automatic.dependencies.download": "true",
-    "RunOnceActivity.go.modules.go.list.on.any.changes.was.set": "true",
-    "git-widget-placeholder": "master",
-    "go.import.settings.migrated": "true",
-    "go.sdk.automatically.set": "true",
-    "last_opened_file_path": "/Users/randy.steven/others/bulletin-board",
-    "node.js.detected.package.eslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultGoTemplateProperty&quot;: &quot;Go File&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.modules.automatic.dependencies.download&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.modules.go.list.on.any.changes.was.set&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
+    &quot;go.sdk.automatically.set&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/randy.steven/others/bulletin-board&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;
   }
-}]]></component>
+}</component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -85,5 +86,16 @@
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/interfaces/repositories/credit_repository.go</url>
+          <line>9</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

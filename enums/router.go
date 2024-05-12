@@ -13,4 +13,5 @@ const (
 	RelationRouter RouterPrefix = `/relations`
 	RewardRouter   RouterPrefix = `/rewards`
 	CategoryRouter RouterPrefix = `/categories`
+	CreditRouter   RouterPrefix = `/credits`
 )

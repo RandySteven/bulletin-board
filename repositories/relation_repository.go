@@ -44,8 +44,8 @@ func (r *relationRepository) Save(ctx context.Context, request *models.Relation)
 }
 
 func (r *relationRepository) FindAll(ctx context.Context) (result []*models.Relation, err error) {
-	var relation = &models.Relation{}
-	return utils.FindAll[models.Relation](ctx, r.db, queries.SelectAllRelations, relation)
+	//var relation = &models.Relation{}
+	return utils.FindAll[models.Relation](ctx, r.db, queries.SelectAllRelations)
 }
 
 func (r *relationRepository) Find(ctx context.Context, id uint64) (result *models.Relation, err error) {

@@ -21,7 +21,10 @@ func (c *creditRepository) GetUserCredits(ctx context.Context, userId uint64) (r
 	defer rows.Close()
 	for rows.Next() {
 		credit := &models.Credit{}
-		rows.Scan(credit.ID, credit.FromUserID, credit.ToUserID, credit.Credit, credit.Description, credit.CreatedAt, credit.UpdatedAt, credit.DeletedAt)
+		err = rows.Scan(credit.ID, credit.FromUserID, credit.ToUserID, credit.Credit, credit.Description, credit.CreatedAt, credit.UpdatedAt, credit.DeletedAt)
+		if err != nil {
+			return nil, err
+		}
 		result = append(result, credit)
 	}
 	return result, nil

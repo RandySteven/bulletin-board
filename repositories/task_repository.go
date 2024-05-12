@@ -3,7 +3,6 @@ package repositories
 import (
 	"context"
 	"database/sql"
-	"log"
 	"task_mission/entities/models"
 	"task_mission/interfaces/repositories"
 	"task_mission/queries"
@@ -19,12 +18,10 @@ func (t *taskRepository) Save(ctx context.Context, request *models.Task) (result
 }
 
 func (t *taskRepository) FindAll(ctx context.Context) (result []*models.Task, err error) {
-	var task = &models.Task{}
-	result, err = utils.FindAll[models.Task](ctx, t.db, queries.SelectAllTasks, task)
+	result, err = utils.FindAll[models.Task](ctx, t.db, queries.SelectAllTasks)
 	if err != nil {
 		return nil, err
 	}
-	log.Println("result : ", result)
 	return result, nil
 }
 

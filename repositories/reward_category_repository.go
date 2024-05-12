@@ -26,8 +26,8 @@ func (r *rewardCategoryRepository) Save(ctx context.Context, request *models.Rew
 }
 
 func (r *rewardCategoryRepository) FindAll(ctx context.Context) (result []*models.RewardCategory, err error) {
-	rewardCategory := &models.RewardCategory{}
-	result, err = utils.FindAll[models.RewardCategory](ctx, r.db, queries.SelectFromRewardCategory, rewardCategory)
+	//rewardCategory := &models.RewardCategory{}
+	result, err = utils.FindAll[models.RewardCategory](ctx, r.db, queries.SelectFromRewardCategory)
 	if err != nil {
 		return nil, err
 	}

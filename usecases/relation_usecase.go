@@ -65,7 +65,7 @@ func (r *relationUsecase) SeeAllFollowings(ctx context.Context) (result []*respo
 		}
 		credits, err := r.creditRepo.GetUserCredits(ctx, friend.ID)
 		if err != nil {
-			return nil, apperror.NewCustomError(apperror.ErrInternalServer, `failed to get credits`, err)
+			credits = []*models.Credit{}
 		}
 		creditAvg := utils.CreditsAverage(credits)
 		response := &responses.FollowingResponse{

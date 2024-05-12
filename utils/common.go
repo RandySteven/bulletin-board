@@ -34,6 +34,9 @@ func GetFieldsOfObject(object interface{}) []string {
 }
 
 func CreditsAverage(credits []*models.Credit) float32 {
+	if len(credits) == 0 {
+		return 0
+	}
 	creditSum := float32(0)
 	for _, credit := range credits {
 		creditSum += credit.Credit

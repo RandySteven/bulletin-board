@@ -8,4 +8,5 @@ type IRelationHandler interface {
 	GetFriendWithUserID(w http.ResponseWriter, r *http.Request)
 	GetAllFollowers(w http.ResponseWriter, r *http.Request)
 	GetAllFollowings(w http.ResponseWriter, r *http.Request)
+	FollowBack(w http.ResponseWriter, r *http.Request)
 }

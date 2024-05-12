@@ -19,6 +19,23 @@ type TaskHandler struct {
 
 func (t *TaskHandler) TakeTaskHandler(w http.ResponseWriter, r *http.Request) {
 	utils.ContentType(w, "application/json")
+	var (
+		rID     = uuid.NewString()
+		ctx     = context.WithValue(r.Context(), enums.RequestID, rID)
+		params  = mux.Vars(r)
+		dataKey = `task`
+	)
+	idInt, err := strconv.Atoi(params["id"])
+	if err != nil {
+		utils.ResponseHandler(w, http.StatusBadRequest, err.Error(), nil, nil, err)
+		return
+	}
+	id := uint64(idInt)
+	res, controllerErr := t.taskUsecase.TakeTask(ctx, id)
+	if controllerErr != nil {
+		return
+	}
+	utils.ResponseHandler(w, http.StatusOK, `success update`, &dataKey, res, nil)
 }
 
 func (t *TaskHandler) CreateTaskHandler(w http.ResponseWriter, r *http.Request) {
