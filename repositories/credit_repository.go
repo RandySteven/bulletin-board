@@ -18,10 +18,17 @@ func (c *creditRepository) GetUserCredits(ctx context.Context, userId uint64) (r
 	if err != nil {
 		return nil, err
 	}
-	defer rows.Close()
 	for rows.Next() {
 		credit := &models.Credit{}
-		err = rows.Scan(credit.ID, credit.FromUserID, credit.ToUserID, credit.Credit, credit.Description, credit.CreatedAt, credit.UpdatedAt, credit.DeletedAt)
+		err = rows.Scan(
+			&credit.ID,
+			&credit.FromID,
+			&credit.ToID,
+			&credit.Credit,
+			&credit.Description,
+			&credit.CreatedAt,
+			&credit.UpdatedAt,
+			&credit.DeletedAt)
 		if err != nil {
 			return nil, err
 		}
@@ -31,7 +38,7 @@ func (c *creditRepository) GetUserCredits(ctx context.Context, userId uint64) (r
 }
 
 func (c *creditRepository) Save(ctx context.Context, request *models.Credit) (result *uint64, err error) {
-	return utils.Save[models.Credit](ctx, c.db, queries.InsertCredit, request.FromUserID, request.ToUserID, request.Credit, request.Description)
+	return utils.Save[models.Credit](ctx, c.db, queries.InsertCredit, request.FromID, request.ToID, request.Credit, request.Description)
 }
 
 func (c *creditRepository) FindAll(ctx context.Context) (result []*models.Credit, err error) {
@@ -40,8 +47,12 @@ func (c *creditRepository) FindAll(ctx context.Context) (result []*models.Credit
 }
 
 func (c *creditRepository) Find(ctx context.Context, id uint64) (result *models.Credit, err error) {
-	//TODO implement me
-	panic("implement me")
+	result = &models.Credit{}
+	err = utils.FindByID[models.Credit](ctx, c.db, queries.SelectCreditByID, id, result)
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
 }
 
 func (c *creditRepository) Delete(ctx context.Context, id uint64) (err error) {

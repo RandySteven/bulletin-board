@@ -12,6 +12,7 @@ type Handlers struct {
 	RelationHandler handlers.IRelationHandler
 	RewardHandler   handlers.IRewardHandler
 	CategoryHandler handlers.ICategoryHandler
+	CreditHandler   handlers.ICreditHandler
 }
 
 func NewHandlers(repo *db.Repositories, service *Services) *Handlers {
@@ -22,5 +23,6 @@ func NewHandlers(repo *db.Repositories, service *Services) *Handlers {
 		RelationHandler: handlers2.NewRelationHandler(usecases.RelationUsecase),
 		RewardHandler:   handlers2.NewRewardHandler(usecases.RewardUsecase),
 		CategoryHandler: handlers2.NewCategoryHandler(usecases.CategoryUsecase),
+		CreditHandler:   handlers2.NewCreditHandler(usecases.CreditUsecase),
 	}
 }

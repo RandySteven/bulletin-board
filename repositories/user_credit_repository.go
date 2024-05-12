@@ -23,8 +23,7 @@ func (u userCreditRepository) FindAll(ctx context.Context) (result []*models.Use
 }
 
 func (u userCreditRepository) Find(ctx context.Context, id uint64) (result *models.UserCredit, err error) {
-	//TODO implement me
-	panic("implement me")
+	return
 }
 
 func (u userCreditRepository) Delete(ctx context.Context, id uint64) (err error) {

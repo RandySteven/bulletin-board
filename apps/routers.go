@@ -51,6 +51,11 @@ func NewEndpointRouters(h *Handlers) map[enums.RouterPrefix][]EndpointRouter {
 		*RegisterEndpointRouter("", http.MethodPost, h.CategoryHandler.AddCategory),
 	}
 
+	endpointRouters[enums.CreditRouter] = []EndpointRouter{
+		*RegisterEndpointRouter("", http.MethodPost, h.CreditHandler.GiveCredit),
+		*RegisterEndpointRouter("", http.MethodGet, h.CreditHandler.SeeUserCredit),
+	}
+
 	return endpointRouters
 }
 
@@ -89,6 +94,13 @@ func (h *Handlers) InitRouter(r *mux.Router) {
 	for _, router := range mapRouters[enums.CategoryRouter] {
 		categoriesRouter.HandleFunc(router.path, router.handler).Methods(router.method)
 		router.RouterLog(enums.CategoryRouter.ToString())
+	}
+
+	creditsRouter := r.PathPrefix(enums.CreditRouter.ToString()).Subrouter()
+	creditsRouter.Use(middlewares.AuthenticationMiddleware)
+	for _, router := range mapRouters[enums.CreditRouter] {
+		creditsRouter.HandleFunc(router.path, router.handler).Methods(router.method)
+		router.RouterLog(enums.CreditRouter.ToString())
 	}
 }
 

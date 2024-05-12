@@ -9,6 +9,7 @@ import (
 	"task_mission/enums"
 	"task_mission/interfaces/repositories"
 	"task_mission/interfaces/usecases"
+	"task_mission/utils"
 )
 
 type creditUsecase struct {
@@ -19,13 +20,17 @@ type creditUsecase struct {
 
 func (c *creditUsecase) GiveCredit(ctx context.Context, request *requests.CreditRequest) (response *responses.UserCreditResponse, customErr *apperror.CustomError) {
 	userId := ctx.Value(enums.UserID).(uint64)
-	user, err := c.userCreditRepository.Find(ctx, userId)
+	user, err := c.userRepository.Find(ctx, userId)
+	if err != nil {
+		return nil, apperror.NewCustomError(apperror.ErrInternalServer, `failed to get user`, err)
+	}
+	toUser, err := c.userRepository.Find(ctx, request.ToUserID)
 	if err != nil {
 		return nil, apperror.NewCustomError(apperror.ErrInternalServer, `failed to get user`, err)
 	}
 	credit := &models.Credit{
-		FromUserID:  user.ID,
-		ToUserID:    request.ToUserID,
+		FromID:      user.ID,
+		ToID:        toUser.ID,
 		Credit:      request.Credit,
 		Description: request.Description,
 	}
@@ -39,14 +44,26 @@ func (c *creditUsecase) GiveCredit(ctx context.Context, request *requests.Credit
 	}
 	response = &responses.UserCreditResponse{
 		Credit: credit.Credit,
-		UserID: user.ID,
+		UserID: toUser.ID,
 	}
 	return response, nil
 }
 
 func (c *creditUsecase) SeeUserCredit(ctx context.Context, userId uint64) (response *responses.UserCreditResponse, customErr *apperror.CustomError) {
-	//TODO implement me
-	panic("implement me")
+	user, err := c.userRepository.Find(ctx, userId)
+	if err != nil {
+		return nil, apperror.NewCustomError(apperror.ErrInternalServer, `failed to get user`, err)
+	}
+	credits, err := c.creditRepository.GetUserCredits(ctx, user.ID)
+	if err != nil {
+		return nil, apperror.NewCustomError(apperror.ErrInternalServer, `failed to get user credits`, err)
+	}
+	creditAvg := utils.CreditsAverage(credits)
+	response = &responses.UserCreditResponse{
+		UserID: user.ID,
+		Credit: creditAvg,
+	}
+	return response, nil
 }
 
 func (c *creditUsecase) SeeAllCredits(ctx context.Context) (result []*responses.UserCreditResponse, customErr *apperror.CustomError) {
