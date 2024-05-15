@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"reflect"
+	"task_mission/apperror"
 	"task_mission/entities/dtos/responses"
 )
 
@@ -61,4 +62,10 @@ func ResponseHandler(w http.ResponseWriter, responseCode int, message string, da
 		log.Fatal(err)
 		return
 	}
+}
+
+func ErrorHandler(w http.ResponseWriter, customErr *apperror.CustomError) {
+	w.WriteHeader(customErr.ErrCode())
+	response := responses.NewResponse("", nil, customErr)
+	json.NewEncoder(w).Encode(&response)
 }

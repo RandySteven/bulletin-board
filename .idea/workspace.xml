@@ -7,9 +7,7 @@
     <list default="true" id="55113090-76c4-41a1-8d86-c4c4c7dc1d85" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/handlers/credit_handler.go" beforeDir="false" afterPath="$PROJECT_DIR$/handlers/credit_handler.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/queries/credit_query.go" beforeDir="false" afterPath="$PROJECT_DIR$/queries/credit_query.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/repositories/credit_repository.go" beforeDir="false" afterPath="$PROJECT_DIR$/repositories/credit_repository.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/usecases/credit_usecase.go" beforeDir="false" afterPath="$PROJECT_DIR$/usecases/credit_usecase.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/rest.go" beforeDir="false" afterPath="$PROJECT_DIR$/utils/rest.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
