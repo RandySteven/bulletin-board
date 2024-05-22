@@ -5,9 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="55113090-76c4-41a1-8d86-c4c4c7dc1d85" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/proto/category.pb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/k6/get/http_task.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/k6/post/http_task.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/handlers/user_handler_test.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/handlers/credit_handler.go" beforeDir="false" afterPath="$PROJECT_DIR$/handlers/credit_handler.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/rest.go" beforeDir="false" afterPath="$PROJECT_DIR$/utils/rest.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,6 +20,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Dockerfile" />
+        <option value="JavaScript File" />
         <option value="Go File" />
       </list>
     </option>
@@ -51,7 +54,8 @@
     &quot;last_opened_file_path&quot;: &quot;/Users/randy.steven/others/bulletin-board&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;google.prototext.language&quot;
   }
 }</component>
   <component name="SharedIndexes">

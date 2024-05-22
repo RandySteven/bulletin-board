@@ -44,4 +44,16 @@ func (uow *unitOfWork) Commit() error {
 	return tx.Commit()
 }
 
+func (uow *unitOfWork) NewUserRepository() repositories.IUserRepository {
+	return NewUserRepository(uow.conn.(*sql.DB))
+}
+
+func (uow *unitOfWork) NewTaskRepository() repositories.ITaskRepository {
+	return NewTaskRepository(uow.conn.(*sql.DB))
+}
+
+func (uow *unitOfWork) NewRewardRepository() repositories.IRewardRepository {
+	return NewRewardRepository(uow.conn.(*sql.DB))
+}
+
 var _ repositories.UnitOfWork = &unitOfWork{}
