@@ -37,11 +37,8 @@ func (u *userUsecase) RegisterUser(ctx context.Context, register *requests.UserR
 			return
 		}
 		err = u.uow.Commit()
-		//if err != nil {
-		//	customErr = apperror.NewCustomError(apperror.ErrInternalServer, `failed to commit transaction`, err)
-		//	return
-		//}
 	}()
+
 	userDoB, err := utils.StringToDate(register.DateOfBirth)
 	if err != nil {
 		return nil, apperror.NewCustomError(apperror.ErrBadRequest, `date of birth is invalid format`, err)

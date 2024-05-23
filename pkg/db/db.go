@@ -52,6 +52,7 @@ func NewRepositories(config *config.Config) (*Repositories, error) {
 		return nil, err
 	}
 	return &Repositories{
+		UnitOfWork:               repositories2.NewUnitOfWork(db),
 		UserRepository:           repositories2.NewUserRepository(db),
 		UserProfileRepository:    repositories2.NewUserProfileRepository(db),
 		RoleRepository:           repositories2.NewRoleRepository(db),
@@ -65,7 +66,6 @@ func NewRepositories(config *config.Config) (*Repositories, error) {
 		UserTaskRepository:       repositories2.NewUserTaskRepository(db),
 		RelationRepository:       repositories2.NewRelationRepository(db),
 		CreditRepository:         repositories2.NewCreditRepository(db),
-		UnitOfWork:               repositories2.NewUnitOfWork(db),
 		db:                       db,
 	}, nil
 }
