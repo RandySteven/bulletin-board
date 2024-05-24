@@ -5,14 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="55113090-76c4-41a1-8d86-c4c4c7dc1d85" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/pkg/grafana/otel.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/k6/post/http_auth.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/interfaces/repositories/unit_of_work.go" beforeDir="false" afterPath="$PROJECT_DIR$/interfaces/repositories/unit_of_work.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/db/db.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/db/db.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/repositories/unit_of_work.go" beforeDir="false" afterPath="$PROJECT_DIR$/repositories/unit_of_work.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/usecases/user_usecase.go" beforeDir="false" afterPath="$PROJECT_DIR$/usecases/user_usecase.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/k6/get/http_task.js" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/k6/get/http_task.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,6 +24,7 @@
         <option value="Dockerfile" />
         <option value="JavaScript File" />
         <option value="Go File" />
+        <option value="package.json" />
       </list>
     </option>
   </component>

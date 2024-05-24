@@ -2,6 +2,8 @@
 go.mod
 go.sum
 .vscode
-
+node_modules
+package-lock.json
+package.json
 .env
 task.local.yml
