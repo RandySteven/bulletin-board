@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Welcome To Bulletin</title>
+</head>
+<body>
+    <h1>Welcome to our bulletin, {{.name}}</h1>
+
+    <p>
+        We are very happy to have you here, we hope with this app you can search help or you can help other people.
+    </p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Joined Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    {{.name}}
+                </td>
+                <td>
+                    {{.username}}
+                </td>
+                <td>
+                    {{.email}}
+                </td>
+                <td>
+                    {{.joined_date}}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

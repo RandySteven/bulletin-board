@@ -3,13 +3,15 @@ package handlers
 import (
 	"context"
 	"github.com/google/uuid"
-	"log"
 	"net/http"
+	"sync"
 	"task_mission/entities/dtos/requests"
 	"task_mission/enums"
 	"task_mission/interfaces/handlers"
 	"task_mission/interfaces/usecases"
+	email2 "task_mission/pkg/email"
 	"task_mission/utils"
+	"time"
 )
 
 type UserHandler struct {
@@ -23,6 +25,7 @@ func (u *UserHandler) RegisterHandler(w http.ResponseWriter, r *http.Request) {
 		ctx     = context.WithValue(r.Context(), enums.RequestID, rID)
 		request = &requests.UserRegisterRequest{}
 		dataKey = `user`
+		wg      sync.WaitGroup
 	)
 
 	if err := utils.BindJSON(r, &request); err != nil {
@@ -35,9 +38,23 @@ func (u *UserHandler) RegisterHandler(w http.ResponseWriter, r *http.Request) {
 		utils.ResponseHandler(w, http.StatusCreated, `failed to register user`, nil, nil, err)
 		return
 	}
-	log.Println("expected result : ", result)
 
-	utils.ResponseHandler(w, http.StatusCreated, `success register user`, &dataKey, result, nil)
+	metadata := map[string]interface{}{
+		"name":        result.Name,
+		"username":    result.UserName,
+		"email":       request.Email,
+		"joined_date": time.Now(),
+	}
+
+	email := email2.NewEmail(request.Email, "Register Email", metadata)
+
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		email.SendEmailRegister()
+		utils.ResponseHandler(w, http.StatusCreated, `success register user`, &dataKey, result, nil)
+	}()
+	wg.Wait()
 }
 
 func (u *UserHandler) LoginHandler(w http.ResponseWriter, r *http.Request) {
