@@ -7,6 +7,7 @@ import (
 )
 
 type Handlers struct {
+	DevHandler      handlers.IDevHandler
 	UserHandler     handlers.IUserHandler
 	TaskHandler     handlers.ITaskHandler
 	RelationHandler handlers.IRelationHandler
@@ -18,6 +19,7 @@ type Handlers struct {
 func NewHandlers(repo *db.Repositories, service *Services) *Handlers {
 	usecases := NewUseCases(repo)
 	return &Handlers{
+		DevHandler:      handlers2.NewDevHandler(),
 		UserHandler:     handlers2.NewUserHandler(usecases.UserUsecase),
 		TaskHandler:     handlers2.NewTaskHandler(usecases.TaskUsecase),
 		RelationHandler: handlers2.NewRelationHandler(usecases.RelationUsecase),

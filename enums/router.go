@@ -7,6 +7,7 @@ func (r RouterPrefix) ToString() string {
 }
 
 const (
+	BasicRouter    RouterPrefix = ""
 	AuthRouter     RouterPrefix = `/auth`
 	UserRouter                  = `/users`
 	TaskRouter     RouterPrefix = `/tasks`
