@@ -7,4 +7,5 @@ type IUserHandler interface {
 	LoginHandler(w http.ResponseWriter, r *http.Request)
 	UserProfileHandler(w http.ResponseWriter, r *http.Request)
 	UserDetailHandler(w http.ResponseWriter, r *http.Request)
+	VerifyUser(w http.ResponseWriter, r *http.Request)
 }

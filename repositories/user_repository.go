@@ -34,9 +34,12 @@ func (u *userRepository) Delete(ctx context.Context, id uint64) (err error) {
 	return utils.Delete[models.User](ctx, u.db, queries.DeleteUser, id)
 }
 
-func (u *userRepository) Update(ctx context.Context, request *models.User) (result *models.User, err error) {
-	//TODO implement me
-	panic("implement me")
+func (u *userRepository) Update(ctx context.Context, request *models.User) (*models.User, error) {
+	err := utils.Update[models.User](ctx, u.db, queries.UpdateUser, &request.Name, &request.UserName, &request.DateOfBirth, &request.Gender, &request.IsVerified, &request.ID)
+	if err != nil {
+		return nil, err
+	}
+	return request, nil
 }
 
 var _ repositories.IUserRepository = &userRepository{}

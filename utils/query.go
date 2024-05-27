@@ -103,10 +103,14 @@ func FindByID[T any](ctx context.Context, db *sql.DB, query queries.GoQuery, id 
 	return nil
 }
 
-func Update[T any](ctx context.Context, db *sql.DB, query queries.GoQuery, toupdate *T) (result *T, err error) {
+func Update[T any](ctx context.Context, db *sql.DB, query queries.GoQuery, requests ...any) (err error) {
 	err = QueryValidation(query, updateQuery)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	return
+	_, err = db.ExecContext(ctx, query.ToString(), requests...)
+	if err != nil {
+		return err
+	}
+	return nil
 }

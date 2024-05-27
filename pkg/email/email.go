@@ -37,23 +37,23 @@ func NewEmail(to, subject string, metadata map[string]interface{}) *Email {
 	}
 }
 
-func (e *Email) sendEmail(templatePath string) {
+func (e *Email) sendEmail(templatePath string) error {
 	htmlContent, err := ioutil.ReadFile(templatePath)
 	if err != nil {
 		log.Fatalf("Failed to read HTML file: %v", err)
-		return
+		return err
 	}
 
 	tmpl, err := template.New("emailTemplate").Parse(string(htmlContent))
 	if err != nil {
 		log.Fatalf("Failed to parse template: %v", err)
-		return
+		return err
 	}
 
 	var body bytes.Buffer
 	if err := tmpl.Execute(&body, e.Metadata); err != nil {
 		log.Fatalf("Failed to execute template: %v", err)
-		return
+		return err
 	}
 
 	mailer := gomail.NewMessage()
@@ -65,15 +65,16 @@ func (e *Email) sendEmail(templatePath string) {
 	log.Println("Sending email to:", e.To)
 	if err := e.Dialer.DialAndSend(mailer); err != nil {
 		log.Fatalf("Failed to send email: %v", err)
-		return
+		return err
 	}
 	log.Println("Email sent successfully!")
+	return nil
 }
 
-func (e *Email) SendEmailRegister() {
-	e.sendEmail("./scripts/email/register.html")
+func (e *Email) SendEmailRegister() error {
+	return e.sendEmail("./scripts/email/register.html")
 }
 
-func (e *Email) SendEmailTest() {
-	e.sendEmail("./scripts/email/index.html")
+func (e *Email) SendEmailTest() error {
+	return e.sendEmail("./scripts/email/index.html")
 }

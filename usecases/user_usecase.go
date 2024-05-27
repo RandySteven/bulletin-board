@@ -25,6 +25,19 @@ type userUsecase struct {
 	userCreditRepo  repositories.IUserCreditRepository
 }
 
+func (u *userUsecase) VerifyUser(ctx context.Context, id uint64) (result *models.User, customErr *apperror.CustomError) {
+	user, err := u.userRepo.Find(ctx, id)
+	if err != nil {
+		return nil, apperror.NewCustomError(apperror.ErrNotFound, `failed to find user`, err)
+	}
+	user.IsVerified = true
+	user, err = u.userRepo.Update(ctx, user)
+	if err != nil {
+		return nil, apperror.NewCustomError(apperror.ErrInternalServer, `failed to update user`, err)
+	}
+	return user, nil
+}
+
 func (u *userUsecase) RegisterUser(ctx context.Context, register *requests.UserRegisterRequest) (result *models.User, customErr *apperror.CustomError) {
 	uow, err := u.uow.Begin(ctx)
 	if err != nil {

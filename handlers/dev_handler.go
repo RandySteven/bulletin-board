@@ -56,7 +56,11 @@ func (d *DevHandler) SendTestEmail(w http.ResponseWriter, r *http.Request) {
 	}
 	dataKey := `response`
 	email := email2.NewEmail("randysteven12@gmail.com", "Test email", metadata)
-	email.SendEmailTest()
+	err := email.SendEmailTest()
+	if err != nil {
+		utils.ResponseHandler(w, http.StatusInternalServerError, `failed`, nil, nil, err)
+		return
+	}
 	utils.ResponseHandler(w, http.StatusOK, `success`, &dataKey, nil, nil)
 
 	utils.ContentType(w, "application/json")

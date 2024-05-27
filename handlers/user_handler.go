@@ -90,6 +90,10 @@ func (u *UserHandler) UserDetailHandler(w http.ResponseWriter, r *http.Request) 
 	panic("implement me")
 }
 
+func (u *UserHandler) VerifyUser(w http.ResponseWriter, r *http.Request) {
+
+}
+
 var _ handlers.IUserHandler = &UserHandler{}
 
 func NewUserHandler(usecase usecases.IUserUsecase) *UserHandler {
