@@ -22,7 +22,7 @@ func NewEndpointRouters(h *Handlers) map[enums.RouterPrefix][]EndpointRouter {
 	endpointRouters := make(map[enums.RouterPrefix][]EndpointRouter)
 
 	endpointRouters[enums.BasicRouter] = []EndpointRouter{
-		*RegisterEndpointRouter("", http.MethodGet, h.DevHandler.HelloDev),
+		*RegisterEndpointRouter("/hello", http.MethodGet, h.DevHandler.HelloDev),
 		*RegisterEndpointRouter("/check-health", http.MethodGet, h.DevHandler.HealthCheck),
 		*RegisterEndpointRouter("/email", http.MethodPost, h.DevHandler.SendTestEmail),
 	}
@@ -67,12 +67,6 @@ func NewEndpointRouters(h *Handlers) map[enums.RouterPrefix][]EndpointRouter {
 
 func (h *Handlers) InitRouter(r *mux.Router) {
 	mapRouters := NewEndpointRouters(h)
-
-	//for prefix, _ := range mapRouters {
-	//	r.PathPrefix(prefix.ToString()).Subrouter().Use(middlewares.TimeoutMiddleware)
-	//	r.PathPrefix(prefix.ToString()).Subrouter().Use(middlewares.LoggingMiddleware)
-	//	r.PathPrefix(prefix.ToString()).Subrouter().Use(middlewares.CorsMiddleware)
-	//}
 
 	basicRouter := r.PathPrefix(enums.BasicRouter.ToString()).Subrouter()
 	for _, router := range mapRouters[enums.BasicRouter] {
