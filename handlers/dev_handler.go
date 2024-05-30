@@ -55,7 +55,7 @@ func (d *DevHandler) SendTestEmail(w http.ResponseWriter, r *http.Request) {
 		"curr_time": time.Now().Local(),
 	}
 	dataKey := `response`
-	email := email2.NewEmail("randysteven12@gmail.com", "Test email", metadata)
+	email := email2.NewMailtrap("randysteven12@gmail.com", "Test email", metadata)
 	err := email.SendEmailTest()
 	if err != nil {
 		utils.ResponseHandler(w, http.StatusInternalServerError, `failed`, nil, nil, err)

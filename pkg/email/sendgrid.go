@@ -11,18 +11,18 @@ import (
 	"os"
 )
 
-type Email struct {
+type SendGrid struct {
 	Client   *sendgrid.Client
 	To       string
 	Subject  string
 	Metadata map[string]interface{}
 }
 
-func NewEmail(to, subject string, metadata map[string]interface{}) *Email {
+func NewSendGrid(to, subject string, metadata map[string]interface{}) *SendGrid {
 	apiKey := os.Getenv("SENDGRID_API_KEY")
 	log.Println("Using SendGrid API Key:", apiKey)
 	client := sendgrid.NewSendClient(apiKey)
-	return &Email{
+	return &SendGrid{
 		Client:   client,
 		To:       to,
 		Subject:  subject,
@@ -30,7 +30,7 @@ func NewEmail(to, subject string, metadata map[string]interface{}) *Email {
 	}
 }
 
-func (e *Email) sendEmail(templatePath string) (*rest.Response, error) {
+func (e *SendGrid) sendEmail(templatePath string) (*rest.Response, error) {
 	htmlContent, err := ioutil.ReadFile(templatePath)
 	if err != nil {
 		log.Fatalf("Failed to read HTML file: %v", err)
@@ -67,10 +67,10 @@ func (e *Email) sendEmail(templatePath string) (*rest.Response, error) {
 	return response, nil
 }
 
-func (e *Email) SendEmailRegister() (*rest.Response, error) {
+func (e *SendGrid) SendEmailRegister() (*rest.Response, error) {
 	return e.sendEmail("./scripts/email/register.html")
 }
 
-func (e *Email) SendEmailTest() (*rest.Response, error) {
+func (e *SendGrid) SendEmailTest() (*rest.Response, error) {
 	return e.sendEmail("./scripts/email/index.html")
 }

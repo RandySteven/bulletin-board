@@ -46,12 +46,16 @@ func (u *UserHandler) RegisterHandler(w http.ResponseWriter, r *http.Request) {
 		"joined_date": time.Now(),
 	}
 
-	email := email2.NewEmail(request.Email, "Register Email", metadata)
+	email := email2.NewMailtrap(request.Email, "Register Email", metadata)
 
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
-		email.SendEmailRegister()
+		err := email.SendEmailRegister()
+		if err != nil {
+			utils.ResponseHandler(w, http.StatusInternalServerError, `failed to register email`, nil, nil, err)
+			return
+		}
 		utils.ResponseHandler(w, http.StatusCreated, `success register user`, &dataKey, result, nil)
 	}()
 	wg.Wait()

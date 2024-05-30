@@ -51,16 +51,6 @@ func main() {
 
 	apps.RegisterMiddleware(r)
 
-	//metadata := map[string]interface{}{
-	//	"app_name":  "Bulletin Board",
-	//	"curr_time": time.Now().Local(),
-	//}
-	//email := email2.NewEmail("randysteven12@gmail.com", "Test email", metadata)
-	//rest, err := email.SendEmailTest()
-	//if err != nil {
-	//	log.Fatal(err)
-	//}
-	//log.Println(rest)
 	handlers.InitRouter(r)
 	config.Run(r)
 }

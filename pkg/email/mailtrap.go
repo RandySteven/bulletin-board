@@ -10,14 +10,14 @@ import (
 	"os"
 )
 
-type Email struct {
+type Mailtrap struct {
 	Dialer   *gomail.Dialer
 	To       string
 	Subject  string
 	Metadata map[string]interface{}
 }
 
-func NewEmail(to, subject string, metadata map[string]interface{}) *Email {
+func NewMailtrap(to, subject string, metadata map[string]interface{}) *Mailtrap {
 	host := "sandbox.smtp.mailtrap.io"
 	port := 587
 	username := "4a87f6082d6054"
@@ -29,7 +29,7 @@ func NewEmail(to, subject string, metadata map[string]interface{}) *Email {
 
 	dialer := gomail.NewDialer(host, port, username, password)
 	dialer.TLSConfig = &tls.Config{InsecureSkipVerify: true}
-	return &Email{
+	return &Mailtrap{
 		Dialer:   dialer,
 		To:       to,
 		Subject:  subject,
@@ -37,7 +37,7 @@ func NewEmail(to, subject string, metadata map[string]interface{}) *Email {
 	}
 }
 
-func (e *Email) sendEmail(templatePath string) {
+func (e *Mailtrap) sendEmail(templatePath string) (err error) {
 	htmlContent, err := ioutil.ReadFile(templatePath)
 	if err != nil {
 		log.Fatalf("Failed to read HTML file: %v", err)
@@ -68,12 +68,13 @@ func (e *Email) sendEmail(templatePath string) {
 		return
 	}
 	log.Println("Email sent successfully!")
+	return nil
 }
 
-func (e *Email) SendEmailRegister() {
-	e.sendEmail("./scripts/email/register.html")
+func (e *Mailtrap) SendEmailRegister() error {
+	return e.sendEmail("./scripts/email/register.html")
 }
 
-func (e *Email) SendEmailTest() {
-	e.sendEmail("./scripts/email/index.html")
+func (e *Mailtrap) SendEmailTest() error {
+	return e.sendEmail("./scripts/email/index.html")
 }
