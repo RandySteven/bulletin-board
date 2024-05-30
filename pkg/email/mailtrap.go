@@ -41,19 +41,19 @@ func (e *Mailtrap) sendEmail(templatePath string) (err error) {
 	htmlContent, err := ioutil.ReadFile(templatePath)
 	if err != nil {
 		log.Fatalf("Failed to read HTML file: %v", err)
-		return
+		return err
 	}
 
 	tmpl, err := template.New("emailTemplate").Parse(string(htmlContent))
 	if err != nil {
 		log.Fatalf("Failed to parse template: %v", err)
-		return
+		return err
 	}
 
 	var body bytes.Buffer
 	if err := tmpl.Execute(&body, e.Metadata); err != nil {
 		log.Fatalf("Failed to execute template: %v", err)
-		return
+		return err
 	}
 
 	mailer := gomail.NewMessage()
@@ -65,7 +65,7 @@ func (e *Mailtrap) sendEmail(templatePath string) (err error) {
 	log.Println("Sending email to:", e.To)
 	if err := e.Dialer.DialAndSend(mailer); err != nil {
 		log.Fatalf("Failed to send email: %v", err)
-		return
+		return err
 	}
 	log.Println("Email sent successfully!")
 	return nil

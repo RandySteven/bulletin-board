@@ -8,7 +8,7 @@ import (
 
 func TimeoutMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		ctx, cancel := context.WithTimeout(r.Context(), 12*time.Second)
+		ctx, cancel := context.WithTimeout(r.Context(), 8*time.Second)
 		defer cancel()
 		r = r.WithContext(ctx)
 

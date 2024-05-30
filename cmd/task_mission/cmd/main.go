@@ -9,14 +9,6 @@ import (
 	"task_mission/pkg/db"
 )
 
-//func init() {
-//	err := godotenv.Load("../files/env/.env")
-//	if err != nil {
-//		log.Fatal("Error loading .env file")
-//		return
-//	}
-//}
-
 func main() {
 	configPath, err := config.ParseFlags()
 
@@ -49,7 +41,7 @@ func main() {
 
 	log.Println("UDAH KE RUN WA")
 
-	apps.RegisterMiddleware(r)
+	r = apps.RegisterMiddleware(r)
 
 	handlers.InitRouter(r)
 	config.Run(r)
