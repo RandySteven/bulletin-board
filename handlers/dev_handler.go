@@ -32,15 +32,40 @@ func (d *DevHandler) HealthCheck(w http.ResponseWriter, r *http.Request) {
 		},
 	},
 	))
-	//check := postgreSql.New(postgreSql.Config{
-	//	DSN: "test:test@tcp(0.0.0.0:31726)/test?charset=utf8",
-	//})
 	h.Register(health.Config{
 		Name:      "mysql",
 		Timeout:   time.Second * 2,
 		SkipOnErr: false,
 	})
+}
 
+func (d *DevHandler) DummyAPICall(w http.ResponseWriter, r *http.Request) {
+	utils.ContentType(w, "application/json")
+	type Dummy struct {
+		ID          uint64 `json:"id"`
+		Title       string `json:"title"`
+		Description string `json:"description"`
+	}
+	dataKey := `dummies`
+	dummies := []Dummy{
+		{
+			ID:          1,
+			Title:       "Dummy 1",
+			Description: "Dummy 1",
+		},
+		{
+			ID:          2,
+			Title:       "Dummy 2",
+			Description: "Dummy 2",
+		},
+		{
+			ID:          3,
+			Title:       "Dummy 3",
+			Description: "Dummy 3",
+		},
+	}
+
+	utils.ResponseHandler(w, http.StatusOK, `success get dummy`, &dataKey, dummies, nil)
 }
 
 func (d *DevHandler) HelloDev(w http.ResponseWriter, r *http.Request) {

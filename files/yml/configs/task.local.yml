@@ -7,8 +7,6 @@ server:
     write: 10
     idle: 5
 
-#postgresql://bulletindb_owner:lDb07joiaytz@ep-royal-poetry-a5kuitu4:us-east-2:aws:neon:tech/bulletindb?sslmode=require
-
 postgres:
   host: "ep-royal-poetry-a5kuitu4.us-east-2.aws.neon.tech"
   port: "5432"

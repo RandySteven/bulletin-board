@@ -29,6 +29,7 @@ func NewEndpointRouters(h *Handlers) map[enums.RouterPrefix][]EndpointRouter {
 		*RegisterEndpointRouter("/hello", http.MethodGet, h.DevHandler.HelloDev),
 		*RegisterEndpointRouter("/check-health", http.MethodGet, h.DevHandler.HealthCheck),
 		*RegisterEndpointRouter("/email", http.MethodPost, h.DevHandler.SendTestEmail),
+		*RegisterEndpointRouter("/dummies", http.MethodGet, h.DevHandler.DummyAPICall),
 	}
 
 	endpointRouters[enums.AuthRouter] = []EndpointRouter{
