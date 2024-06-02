@@ -84,6 +84,38 @@ func (_m *IUserUsecase) RegisterUser(ctx context.Context, register *requests.Use
 	return r0, r1
 }
 
+// VerifyUser provides a mock function with given fields: ctx, id
+func (_m *IUserUsecase) VerifyUser(ctx context.Context, id uint64) (*models.User, *apperror.CustomError) {
+	ret := _m.Called(ctx, id)
+
+	if len(ret) == 0 {
+		panic("no return value specified for VerifyUser")
+	}
+
+	var r0 *models.User
+	var r1 *apperror.CustomError
+	if rf, ok := ret.Get(0).(func(context.Context, uint64) (*models.User, *apperror.CustomError)); ok {
+		return rf(ctx, id)
+	}
+	if rf, ok := ret.Get(0).(func(context.Context, uint64) *models.User); ok {
+		r0 = rf(ctx, id)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*models.User)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func(context.Context, uint64) *apperror.CustomError); ok {
+		r1 = rf(ctx, id)
+	} else {
+		if ret.Get(1) != nil {
+			r1 = ret.Get(1).(*apperror.CustomError)
+		}
+	}
+
+	return r0, r1
+}
+
 // NewIUserUsecase creates a new instance of IUserUsecase. It also registers a testing interface on the mock and a cleanup function to assert the mocks expectations.
 // The first argument is typically a *testing.T value.
 func NewIUserUsecase(t interface {

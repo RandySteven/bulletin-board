@@ -41,6 +41,18 @@ run-docker:
 
 stop-docker:
 	docker compose down
+
+usecase_mockery: interfaces/usecases/*.go
+	mockery --dir=interfaces/usecases \
+           --name=$(shell basename $< -ext) \  # Extract filename without extension
+           --filename=user_usecase.go \
+           --output=mocks/usecasemocks \
+           --outpkg=usecasemocks
+.PHONY: usecase_mockery
+
+test:
+	go test -coverprofile=coverage.out -v ./... && go tool cover -html=coverage.out -o coverage.html
+
 #
 #MODELNAME := $(shell bash -c 'read -p "Model name : " modelfile; echo $$modelfile')
 #LOWER_FIRST_CHAR := $(shell echo $(MODELNAME) | cut -c1 | tr '[:upper:]' '[:lower:]')
