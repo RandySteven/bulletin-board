@@ -1,24 +1,17 @@
 import http from 'k6/http'
 import {check, sleep} from 'k6'
+import {Post} from "../api_script.js";
 
-export default function(){
-    const url = "http://localhost:8080/auth/login"
-    const payload = JSON.stringify({
+export default function Login(){
+    const endpoint = "/auth/login"
+    const payload ={
         email: "randysteven12@gmail.com",
         password: "test_1234"
-    })
-
-    const param = {
-        headers: {
-            'Content-Type': 'application/json'
-        }
     }
 
-    const res = http.post(url, payload, param)
+    const res = Post(200, endpoint, null, payload)
 
-    check(res, {
-            'Post status is 200 ': (r) => res.status === 200
-        }
-    )
-    console.log(res)
+    let response = res.json()
+    console.log(response.message)
+    return response.data.user.token
 }
