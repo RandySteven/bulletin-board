@@ -32,6 +32,11 @@ func NewEndpointRouters(h *Handlers) map[enums.RouterPrefix][]EndpointRouter {
 		*RegisterEndpointRouter("/login", http.MethodPost, h.UserHandler.LoginHandler),
 	}
 
+	endpointRouters[enums.UserRouter] = []EndpointRouter{
+		*RegisterEndpointRouter("", http.MethodGet, h.UserHandler.UserProfileHandler),
+		*RegisterEndpointRouter("/{id}", http.MethodGet, h.UserHandler.UserDetailHandler),
+	}
+
 	endpointRouters[enums.TaskRouter] = []EndpointRouter{
 		*RegisterEndpointRouter("", http.MethodPost, h.TaskHandler.CreateTaskHandler),
 		*RegisterEndpointRouter("", http.MethodGet, h.TaskHandler.GetAllTasksHandler),
@@ -78,6 +83,13 @@ func (h *Handlers) InitRouter(r *mux.Router) {
 	for _, router := range mapRouters[enums.AuthRouter] {
 		authRouter.HandleFunc(router.path, router.handler).Methods(router.method)
 		router.RouterLog(enums.AuthRouter.ToString())
+	}
+
+	userRouter := r.PathPrefix(enums.UserRouter.ToString()).Subrouter()
+	userRouter.Use(middlewares.AuthenticationMiddleware)
+	for _, router := range mapRouters[enums.UserRouter] {
+		userRouter.HandleFunc(router.path, router.handler).Methods(router.method)
+		router.RouterLog(enums.UserRouter.ToString())
 	}
 
 	taskRouter := r.PathPrefix(enums.TaskRouter.ToString()).Subrouter()

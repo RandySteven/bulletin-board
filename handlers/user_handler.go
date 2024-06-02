@@ -3,7 +3,9 @@ package handlers
 import (
 	"context"
 	"github.com/google/uuid"
+	"github.com/gorilla/mux"
 	"net/http"
+	"strconv"
 	"sync"
 	"task_mission/entities/dtos/requests"
 	"task_mission/enums"
@@ -85,13 +87,42 @@ func (u *UserHandler) LoginHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (u *UserHandler) UserProfileHandler(w http.ResponseWriter, r *http.Request) {
-	//TODO implement me
-	panic("implement me")
+	var (
+		rID     = uuid.NewString()
+		ctx     = context.WithValue(r.Context(), enums.RequestID, rID)
+		dataKey = `user`
+	)
+	userID := ctx.Value(enums.UserID).(uint64)
+	result, customErr := u.usecase.UserDetail(ctx, userID)
+
+	if customErr != nil {
+		utils.ResponseHandler(w, customErr.ErrCode(), customErr.Error(), nil, nil, customErr)
+		return
+	}
+
+	utils.ResponseHandler(w, http.StatusOK, `Success login`, &dataKey, result, nil)
 }
 
 func (u *UserHandler) UserDetailHandler(w http.ResponseWriter, r *http.Request) {
-	//TODO implement me
-	panic("implement me")
+	var (
+		rID     = uuid.NewString()
+		ctx     = context.WithValue(r.Context(), enums.RequestID, rID)
+		dataKey = `user`
+	)
+	param := mux.Vars(r)
+	userId, err := strconv.Atoi(param["id"])
+	if err != nil {
+		utils.ResponseHandler(w, http.StatusBadRequest, err.Error(), nil, nil, err)
+		return
+	}
+
+	result, customErr := u.usecase.UserDetail(ctx, uint64(userId))
+	if customErr != nil {
+		utils.ResponseHandler(w, customErr.ErrCode(), customErr.Error(), nil, nil, customErr)
+		return
+	}
+
+	utils.ResponseHandler(w, http.StatusOK, `Success login`, &dataKey, result, nil)
 }
 
 func (u *UserHandler) VerifyUser(w http.ResponseWriter, r *http.Request) {

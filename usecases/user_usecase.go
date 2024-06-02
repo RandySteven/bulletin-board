@@ -25,6 +25,51 @@ type userUsecase struct {
 	userCreditRepo  repositories.IUserCreditRepository
 }
 
+func (u *userUsecase) UserDetail(ctx context.Context, id uint64) (result *responses.UserDetailResponse, customErr *apperror.CustomError) {
+	var (
+		wg          sync.WaitGroup
+		user        *models.User
+		profile     *models.UserProfile
+		err         error
+		customErrCh = make(chan *apperror.CustomError)
+	)
+	wg.Add(2)
+	go func() {
+		defer wg.Done()
+		user, err = u.userRepo.Find(ctx, id)
+		if err != nil {
+			customErrCh <- apperror.NewCustomError(apperror.ErrInternalServer, `failed to get user`, err)
+			return
+		}
+	}()
+
+	go func() {
+		defer wg.Done()
+		profile, err = u.userProfileRepo.FindByUserID(ctx, id)
+		if err != nil {
+			customErrCh <- apperror.NewCustomError(apperror.ErrInternalServer, `failed to get user`, err)
+			return
+		}
+	}()
+
+	wg.Wait()
+	close(customErrCh)
+
+	for customErr = range customErrCh {
+		return nil, customErr
+	}
+
+	result = &responses.UserDetailResponse{
+		ID:          user.ID,
+		Name:        user.Name,
+		UserName:    user.UserName,
+		Email:       profile.Email,
+		DateOfBirth: user.DateOfBirth,
+	}
+
+	return result, nil
+}
+
 func (u *userUsecase) VerifyUser(ctx context.Context, id uint64) (result *models.User, customErr *apperror.CustomError) {
 	user, err := u.userRepo.Find(ctx, id)
 	if err != nil {

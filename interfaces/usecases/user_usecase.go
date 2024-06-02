@@ -12,4 +12,5 @@ type IUserUsecase interface {
 	RegisterUser(ctx context.Context, register *requests.UserRegisterRequest) (result *models.User, customErr *apperror.CustomError)
 	LoginUser(ctx context.Context, login *requests.UserLoginRequest) (result *responses.UserLoginResponse, customErr *apperror.CustomError)
 	VerifyUser(ctx context.Context, id uint64) (result *models.User, customErr *apperror.CustomError)
+	UserDetail(ctx context.Context, id uint64) (result *responses.UserDetailResponse, customErr *apperror.CustomError)
 }
