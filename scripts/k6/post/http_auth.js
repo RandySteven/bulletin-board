@@ -2,13 +2,23 @@ import http from 'k6/http'
 import {check, sleep} from 'k6'
 
 export default function(){
-    let data = {
-        email: 'beatuzcrespo18@gmail.com', password: "test_1234"
+    const url = "http://localhost:8080/auth/login"
+    const payload = JSON.stringify({
+        email: "randysteven12@gmail.com",
+        password: "test_1234"
+    })
+
+    const param = {
+        headers: {
+            'Content-Type': 'application/json'
+        }
     }
 
-    const url = "http://localhost:8000/auth/login/";
+    const res = http.post(url, payload, param)
 
-    let res = http.post(url, data);
-
-    console.log(res.json())
+    check(res, {
+            'Post status is 200 ': (r) => res.status === 200
+        }
+    )
+    console.log(res)
 }
