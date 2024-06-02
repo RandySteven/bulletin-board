@@ -133,5 +133,5 @@ func (router *EndpointRouter) RouterLog(prefix string) {
 	//red := color.New(color.FgRed).SprintFunc()
 	//green := color.New(color.FgGreen).SprintFunc()
 
-	log.Printf("%4s | %4s/ \n", router.method, prefix+router.path)
+	log.Printf("%12s | %4s/ \n", router.method, prefix+router.path)
 }
