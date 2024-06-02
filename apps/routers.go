@@ -8,13 +8,17 @@ import (
 	"task_mission/middlewares"
 )
 
-type EndpointRouter struct {
-	path    string
-	handler func(w http.ResponseWriter, r *http.Request)
-	method  string
-}
+type (
+	HandlerFunc func(w http.ResponseWriter, r *http.Request)
 
-func RegisterEndpointRouter(path, method string, handler func(w http.ResponseWriter, r *http.Request)) *EndpointRouter {
+	EndpointRouter struct {
+		path    string
+		handler HandlerFunc
+		method  string
+	}
+)
+
+func RegisterEndpointRouter(path, method string, handler HandlerFunc) *EndpointRouter {
 	return &EndpointRouter{path: path, handler: handler, method: method}
 }
 
