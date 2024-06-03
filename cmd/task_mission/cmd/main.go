@@ -10,6 +10,8 @@ import (
 )
 
 func main() {
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
 	configPath, err := config.ParseFlags()
 
 	if err != nil {
@@ -29,11 +31,18 @@ func main() {
 		return
 	}
 
-	services, err := apps.NewServices(context.Background())
+	services, err := apps.NewServices(ctx)
 	if err != nil {
 		log.Fatal(err)
 		return
 	}
+
+	//shutdown, err := grafana.SetupOTelSDK(ctx)
+	//if err != nil {
+	//	log.Fatal(err)
+	//	return
+	//}
+	//defer shutdown(ctx)
 
 	handlers := apps.NewHandlers(repositories, services)
 
