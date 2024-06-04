@@ -2,6 +2,7 @@ package utils
 
 import (
 	"encoding/json"
+	"encoding/xml"
 	"fmt"
 	"github.com/iancoleman/strcase"
 	"io"
@@ -10,6 +11,7 @@ import (
 	"reflect"
 	"task_mission/apperror"
 	"task_mission/entities/dtos/responses"
+	"task_mission/enums"
 )
 
 func ContentType(w http.ResponseWriter, contentType string) {
@@ -18,6 +20,10 @@ func ContentType(w http.ResponseWriter, contentType string) {
 
 func BindJSON(req *http.Request, request interface{}) error {
 	return json.NewDecoder(req.Body).Decode(&request)
+}
+
+func BindXML(req *http.Request, request interface{}) error {
+	return xml.NewDecoder(req.Body).Decode(&request)
 }
 
 func BindForm(req *http.Request, request interface{}) error {
@@ -106,6 +112,18 @@ func ResponseHandler(w http.ResponseWriter, responseCode int, message string, da
 		log.Fatal(err)
 		return
 	}
+}
+
+func BindRequest(req *http.Request, request interface{}) error {
+	contentType := req.Header.Get("Content-Type")
+
+	switch contentType {
+	case enums.ContentTypeJSON:
+		return BindJSON(req, request)
+	case enums.ContentTypeForm:
+		return BindMultipartForm(req, request)
+	}
+	return nil
 }
 
 func ErrorHandler(w http.ResponseWriter, customErr *apperror.CustomError) {
