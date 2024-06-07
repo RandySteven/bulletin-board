@@ -115,15 +115,14 @@ func ResponseHandler(w http.ResponseWriter, responseCode int, message string, da
 }
 
 func BindRequest(req *http.Request, request interface{}) error {
+	var bindRequestType = map[string]error{
+		enums.ContentTypeJSON: BindJSON(req, request),
+		enums.ContentTypeForm: BindForm(req, request),
+	}
+
 	contentType := req.Header.Get("Content-Type")
 
-	switch contentType {
-	case enums.ContentTypeJSON:
-		return BindJSON(req, request)
-	case enums.ContentTypeForm:
-		return BindMultipartForm(req, request)
-	}
-	return nil
+	return bindRequestType[contentType]
 }
 
 func ErrorHandler(w http.ResponseWriter, customErr *apperror.CustomError) {

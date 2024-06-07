@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"context"
+	"fmt"
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
 	"net/http"
@@ -46,6 +47,7 @@ func (u *UserHandler) RegisterHandler(w http.ResponseWriter, r *http.Request) {
 		"username":    result.UserName,
 		"email":       request.Email,
 		"joined_date": time.Now(),
+		"verify_link": fmt.Sprintf("http://localhost:8080/users/verify/%d", result.ID),
 	}
 
 	email := email2.NewMailtrap(request.Email, "Register Email", metadata)
@@ -72,7 +74,7 @@ func (u *UserHandler) LoginHandler(w http.ResponseWriter, r *http.Request) {
 		dataKey = `user`
 	)
 
-	if err := utils.BindJSON(r, request); err != nil {
+	if err := utils.BindRequest(r, request); err != nil {
 		utils.ResponseHandler(w, http.StatusBadRequest, err.Error(), nil, nil, err)
 		return
 	}
@@ -126,7 +128,23 @@ func (u *UserHandler) UserDetailHandler(w http.ResponseWriter, r *http.Request) 
 }
 
 func (u *UserHandler) VerifyUser(w http.ResponseWriter, r *http.Request) {
-
+	var (
+		rID     = uuid.NewString()
+		ctx     = context.WithValue(r.Context(), enums.RequestID, rID)
+		dataKey = `user`
+	)
+	param := mux.Vars(r)
+	userId, err := strconv.Atoi(param["id"])
+	if err != nil {
+		utils.ResponseHandler(w, http.StatusBadRequest, err.Error(), nil, nil, err)
+		return
+	}
+	user, customErr := u.usecase.VerifyUser(ctx, uint64(userId))
+	if customErr != nil {
+		utils.ResponseHandler(w, customErr.ErrCode(), customErr.Error(), nil, nil, customErr)
+		return
+	}
+	utils.ResponseHandler(w, http.StatusOK, `Success login`, &dataKey, user, nil)
 }
 
 var _ handlers.IUserHandler = &UserHandler{}

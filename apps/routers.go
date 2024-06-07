@@ -40,6 +40,7 @@ func NewEndpointRouters(h *Handlers) map[enums.RouterPrefix][]EndpointRouter {
 	endpointRouters[enums.UserRouter] = []EndpointRouter{
 		*RegisterEndpointRouter("", http.MethodGet, h.UserHandler.UserProfileHandler),
 		*RegisterEndpointRouter("/{id}", http.MethodGet, h.UserHandler.UserDetailHandler),
+		*RegisterEndpointRouter("/verify/{id}", http.MethodGet, h.UserHandler.VerifyUser),
 	}
 
 	endpointRouters[enums.TaskRouter] = []EndpointRouter{
@@ -78,6 +79,16 @@ func NewEndpointRouters(h *Handlers) map[enums.RouterPrefix][]EndpointRouter {
 func (h *Handlers) InitRouter(r *mux.Router) {
 	mapRouters := NewEndpointRouters(h)
 
+	//var withOutMiddleware = func(prefix enums.RouterPrefix, path string) {
+	//	router := r.PathPrefix(prefix.ToString()).Subrouter()
+	//	for _, mapRouter := range mapRouters[prefix] {
+	//		if mapRouter.path != path {
+	//			router.Use(middlewares.AuthenticationMiddleware)
+	//		}
+	//		router.HandleFunc(mapRouter.path, mapRouter.handler).Methods(mapRouter.method)
+	//	}
+	//}
+
 	basicRouter := r.PathPrefix(enums.BasicRouter.ToString()).Subrouter()
 	for _, router := range mapRouters[enums.BasicRouter] {
 		basicRouter.HandleFunc(router.path, router.handler).Methods(router.method)
@@ -91,6 +102,7 @@ func (h *Handlers) InitRouter(r *mux.Router) {
 	}
 
 	userRouter := r.PathPrefix(enums.UserRouter.ToString()).Subrouter()
+	userRouter.HandleFunc("/users/verify/{id}", h.UserHandler.VerifyUser).Methods(http.MethodGet) //anti pattern
 	userRouter.Use(middlewares.AuthenticationMiddleware)
 	for _, router := range mapRouters[enums.UserRouter] {
 		userRouter.HandleFunc(router.path, router.handler).Methods(router.method)
