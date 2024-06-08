@@ -3,6 +3,7 @@ package repositories
 import (
 	"context"
 	"database/sql"
+	"errors"
 	"task_mission/entities/models"
 	"task_mission/interfaces/repositories"
 	"task_mission/queries"
@@ -19,6 +20,18 @@ func (u *userRepository) Save(ctx context.Context, request *models.User) (result
 
 func (u *userRepository) FindAll(ctx context.Context) (result []*models.User, err error) {
 	return utils.FindAll[models.User](ctx, u.db, queries.SelectAllUser)
+}
+
+func (u *userRepository) FindVerifyUser(ctx context.Context, id uint64, isVerified bool) (result *models.User, err error) {
+	result = &models.User{}
+	err = u.db.QueryRowContext(ctx, queries.SelectUserVerifyCondition, id, isVerified).Scan(&result.IsVerified)
+	if errors.Is(err, sql.ErrNoRows) {
+		return nil, err
+	}
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
 }
 
 func (u *userRepository) Find(ctx context.Context, id uint64) (result *models.User, err error) {
