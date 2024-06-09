@@ -31,7 +31,7 @@ func (u *UserHandler) RegisterHandler(w http.ResponseWriter, r *http.Request) {
 		wg      sync.WaitGroup
 	)
 
-	if err := utils.BindJSON(r, &request); err != nil {
+	if err := utils.BindRequest(r, &request); err != nil {
 		utils.ResponseHandler(w, http.StatusBadRequest, `failed to register user`, nil, nil, err)
 		return
 	}

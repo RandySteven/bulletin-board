@@ -24,7 +24,7 @@ func (c *CreditHandler) GiveCredit(w http.ResponseWriter, r *http.Request) {
 		request = &requests.CreditRequest{}
 		dataKey = `credit`
 	)
-	if err := utils.BindJSON(r, request); err != nil {
+	if err := utils.BindRequest(r, request); err != nil {
 		utils.ResponseHandler(w, http.StatusBadRequest, `invalid_json`, nil, nil, err)
 		return
 	}

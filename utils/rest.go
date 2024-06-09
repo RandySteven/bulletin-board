@@ -116,8 +116,9 @@ func ResponseHandler(w http.ResponseWriter, responseCode int, message string, da
 
 func BindRequest(req *http.Request, request interface{}) error {
 	var bindRequestType = map[string]error{
-		enums.ContentTypeJSON: BindJSON(req, request),
-		enums.ContentTypeForm: BindForm(req, request),
+		enums.ContentTypeJSON:     BindJSON(req, request),
+		enums.ContentTypeForm:     BindForm(req, request),
+		enums.ContentTypeFormData: BindMultipartForm(req, request),
 	}
 
 	contentType := req.Header.Get("Content-Type")

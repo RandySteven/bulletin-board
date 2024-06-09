@@ -5,28 +5,30 @@ import (
 	"task_mission/utils"
 )
 
-type RewardRequest struct {
-	Name        string `json:"name"`
-	Image       string `json:"image"`
-	Description string `json:"description"`
-}
+type (
+	RewardRequest struct {
+		Name        string `json:"name" form:"name"`
+		Image       string `json:"image" form:"image"`
+		Description string `json:"description" form:"description"`
+	}
 
-type TaskRequest struct {
-	Title       string `json:"title" validate:"required,min:3,max:36"`
-	Description string `json:"description" validate:"required"`
-	Image       string `json:"image"`
-	ExpiredDate string `json:"expired_date"`
-}
+	TaskRequest struct {
+		Title       string `json:"title" validate:"required,min:3,max:36" form:"title"`
+		Description string `json:"description" validate:"required" form:"description"`
+		Image       string `json:"image" form:"image"`
+		ExpiredDate string `json:"expired_date" form:"expired_date"`
+	}
 
-type CategoriesRequest struct {
-	IDs []uint64 `json:"ids"`
-}
+	CategoriesRequest struct {
+		IDs []uint64 `json:"ids"`
+	}
 
-type CreateTaskRequest struct {
-	Task       TaskRequest       `json:"task" validate:"required"`
-	Reward     RewardRequest     `json:"reward" validate:"required"`
-	Categories CategoriesRequest `json:"categories" validate:"required"`
-}
+	CreateTaskRequest struct {
+		Task       TaskRequest       `json:"task" validate:"required" form:"task"`
+		Reward     RewardRequest     `json:"reward" validate:"required" form:"reward"`
+		Categories CategoriesRequest `json:"categories" validate:"required" form:"categories"`
+	}
+)
 
 func (request *CreateTaskRequest) ConvertTask() *models.Task {
 	taskRequest := request.Task

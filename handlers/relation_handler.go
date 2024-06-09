@@ -51,7 +51,7 @@ func (rh *RelationHandler) AddFriend(w http.ResponseWriter, r *http.Request) {
 		request = &requests.FriendRequest{}
 		dataKey = `relation`
 	)
-	if err := utils.BindJSON(r, request); err != nil {
+	if err := utils.BindRequest(r, request); err != nil {
 		utils.ResponseHandler(w, http.StatusBadRequest, `fail to parse request`, nil, nil, err)
 		return
 	}
