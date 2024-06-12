@@ -1,4 +1,4 @@
-package repositories
+package postgres_repositories
 
 import (
 	"context"

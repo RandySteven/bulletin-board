@@ -8,7 +8,7 @@ import (
 	"log"
 	"task_mission/interfaces/repositories"
 	"task_mission/pkg/config"
-	repositories2 "task_mission/repositories"
+	"task_mission/repositories/postgres"
 	"time"
 )
 
@@ -52,20 +52,20 @@ func NewRepositories(config *config.Config) (*Repositories, error) {
 		return nil, err
 	}
 	return &Repositories{
-		UnitOfWork:               repositories2.NewUnitOfWork(db),
-		UserRepository:           repositories2.NewUserRepository(db),
-		UserProfileRepository:    repositories2.NewUserProfileRepository(db),
-		RoleRepository:           repositories2.NewRoleRepository(db),
-		CategoryRepository:       repositories2.NewCategoryRepository(db),
-		TaskRepository:           repositories2.NewTaskRepository(db),
-		RewardRepository:         repositories2.NewRewardRepository(db),
-		RewardCategoryRepository: repositories2.NewRewardCategoryRepository(db),
-		TaskRewardRepository:     repositories2.NewTaskRewardRepository(db),
-		UserCreditRepository:     repositories2.NewUserCreditRepository(db),
-		UserRoleRepository:       repositories2.NewUserRoleRepository(db),
-		UserTaskRepository:       repositories2.NewUserTaskRepository(db),
-		RelationRepository:       repositories2.NewRelationRepository(db),
-		CreditRepository:         repositories2.NewCreditRepository(db),
+		UnitOfWork:               postgres_repositories.NewUnitOfWork(db),
+		UserRepository:           postgres_repositories.NewUserRepository(db),
+		UserProfileRepository:    postgres_repositories.NewUserProfileRepository(db),
+		RoleRepository:           postgres_repositories.NewRoleRepository(db),
+		CategoryRepository:       postgres_repositories.NewCategoryRepository(db),
+		TaskRepository:           postgres_repositories.NewTaskRepository(db),
+		RewardRepository:         postgres_repositories.NewRewardRepository(db),
+		RewardCategoryRepository: postgres_repositories.NewRewardCategoryRepository(db),
+		TaskRewardRepository:     postgres_repositories.NewTaskRewardRepository(db),
+		UserCreditRepository:     postgres_repositories.NewUserCreditRepository(db),
+		UserRoleRepository:       postgres_repositories.NewUserRoleRepository(db),
+		UserTaskRepository:       postgres_repositories.NewUserTaskRepository(db),
+		RelationRepository:       postgres_repositories.NewRelationRepository(db),
+		CreditRepository:         postgres_repositories.NewCreditRepository(db),
 		db:                       db,
 	}, nil
 }

@@ -22,5 +22,12 @@ type (
 			DbUser string `yaml:"dbuser"`
 			DbPass string `yaml:"dbpass"`
 		} `yaml:"postgres"`
+
+		Redis struct {
+			Host     string `yaml:"host"`
+			Port     string `yaml:"port"`
+			Password string `yaml:"password"`
+			DB       int    `yaml:"db"`
+		} `yaml:"redis"`
 	}
 )

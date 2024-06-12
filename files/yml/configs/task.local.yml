@@ -13,3 +13,9 @@ postgres:
   dbname: "bulletindb"
   dbuser: "bulletindb_owner"
   dbpass: "lDb07joiaytz"
+
+redis:
+  host: ""
+  port: ""
+  password: ""
+  db: 0
