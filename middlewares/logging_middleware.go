@@ -3,9 +3,11 @@ package middlewares
 import (
 	"bytes"
 	"encoding/json"
+	"github.com/prometheus/client_golang/prometheus"
 	"io/ioutil"
 	"log"
 	"net/http"
+	"task_mission/pkg/grafana"
 	"time"
 )
 
@@ -25,6 +27,12 @@ func LoggingMiddleware(next http.Handler) http.Handler {
 		r.Body = ioutil.NopCloser(bytes.NewBuffer(body))
 
 		next.ServeHTTP(w, r)
+		requestMetrics := grafana.InitGrafana()
+		requestMetrics.CounterVec.With(
+			prometheus.Labels{
+				"method": r.Method,
+				"path":   r.URL.Path,
+			}).Inc()
 
 		var requestBody interface{}
 		if err := json.Unmarshal(body, &requestBody); err != nil {

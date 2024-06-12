@@ -2,6 +2,7 @@ package apps
 
 import (
 	"github.com/gorilla/mux"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"log"
 	"net/http"
 	"task_mission/enums"
@@ -88,7 +89,7 @@ func (h *Handlers) InitRouter(r *mux.Router) {
 	//		router.HandleFunc(mapRouter.path, mapRouter.handler).Methods(mapRouter.method)
 	//	}
 	//}
-
+	r.HandleFunc("/metrics", promhttp.Handler().ServeHTTP)
 	basicRouter := r.PathPrefix(enums.BasicRouter.ToString()).Subrouter()
 	for _, router := range mapRouters[enums.BasicRouter] {
 		basicRouter.HandleFunc(router.path, router.handler).Methods(router.method)
