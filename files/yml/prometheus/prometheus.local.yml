@@ -1,5 +1,0 @@
-remote_write:
-  - url: https://prometheus-prod-37-prod-ap-southeast-1.grafana.net/api/prom/push
-    basic_auth:
-      username: 1595813
-      password: glc_eyJvIjoiMTEzMTk2MCIsIm4iOiJzdGFjay05NDAwNjMtaG0td3JpdGUtZ3JhZmFuYV9idWxsZXRpbiIsImsiOiJBOFNxdFkzbG82SG5nRDI5M1cxUTcwbjQiLCJtIjp7InIiOiJwcm9kLWFwLXNvdXRoZWFzdC0xIn19
