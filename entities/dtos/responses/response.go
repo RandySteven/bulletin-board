@@ -7,5 +7,14 @@ type Response struct {
 }
 
 func NewResponse(message string, data any, err error) *Response {
-	return &Response{Message: message, Data: data, Error: err}
+	response := &Response{
+		Message: message,
+	}
+	if err != nil {
+		response.Error = err
+	}
+	if data != nil {
+		response.Data = data
+	}
+	return response
 }
