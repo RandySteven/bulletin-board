@@ -2,6 +2,7 @@ package requests
 
 import (
 	"task_mission/entities/models"
+	"task_mission/enums"
 	"task_mission/utils"
 )
 
@@ -30,7 +31,7 @@ type (
 	}
 )
 
-func (request *CreateTaskRequest) ConvertTask() *models.Task {
+func (request *CreateTaskRequest) ConvertTask(userId uint64) *models.Task {
 	taskRequest := request.Task
 	expiredDate, err := utils.StringToDate(request.Task.ExpiredDate)
 	if err != nil {
@@ -40,6 +41,8 @@ func (request *CreateTaskRequest) ConvertTask() *models.Task {
 		Title:       taskRequest.Title,
 		Description: taskRequest.Description,
 		Image:       taskRequest.Image,
+		UserID:      userId,
+		Status:      enums.Open,
 		ExpiredDate: expiredDate,
 	}
 	return task

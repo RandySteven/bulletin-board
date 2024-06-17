@@ -3,6 +3,7 @@ package usecases
 import (
 	"context"
 	"fmt"
+	"log"
 	"sync"
 	"task_mission/apperror"
 	"task_mission/entities/dtos/requests"
@@ -192,9 +193,8 @@ func (t *taskUsecase) CreateTask(ctx context.Context, request *requests.CreateTa
 
 	go func() *uint64 {
 		defer wg.Done()
-		task = request.ConvertTask()
-		task.UserID = user.ID
-		task.Status = enums.Open
+		task = request.ConvertTask(user.ID)
+		log.Println(task)
 		taskId, err = t.taskRepo.Save(ctx, task)
 		if err != nil {
 			ch <- err

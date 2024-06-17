@@ -14,7 +14,7 @@ type taskRepository struct {
 }
 
 func (t *taskRepository) Save(ctx context.Context, request *models.Task) (result *uint64, err error) {
-	return utils.Save[models.Task](ctx, t.db, queries.InsertTask, request.Title, request.Description, request.Image, request.UserID, request.ExpiredDate, request.Status)
+	return utils.Save[models.Task](ctx, t.db, queries.InsertTask, &request.Title, &request.Description, &request.Image, &request.UserID, &request.ExpiredDate, &request.Status)
 }
 
 func (t *taskRepository) FindAll(ctx context.Context) (result []*models.Task, err error) {
