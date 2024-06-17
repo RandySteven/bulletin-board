@@ -48,12 +48,13 @@ func (request *CreateTaskRequest) ConvertTask(userId uint64) *models.Task {
 	return task
 }
 
-func (request *CreateTaskRequest) ConvertReward() *models.Reward {
+func (request *CreateTaskRequest) ConvertReward(userId uint64) *models.Reward {
 	rewardRequest := request.Reward
 	reward := &models.Reward{
 		Name:        rewardRequest.Name,
 		Image:       rewardRequest.Image,
 		Description: rewardRequest.Description,
+		UserID:      userId,
 	}
 	return reward
 }

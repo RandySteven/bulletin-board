@@ -205,8 +205,7 @@ func (t *taskUsecase) CreateTask(ctx context.Context, request *requests.CreateTa
 
 	go func() *uint64 {
 		defer wg.Done()
-		reward := request.ConvertReward()
-		reward.UserID = user.ID
+		reward := request.ConvertReward(user.ID)
 		rewardId, err = t.rewardRepo.Save(ctx, reward)
 		if err != nil {
 			ch <- err
