@@ -21,4 +21,9 @@ type (
 		UserName    string    `json:"user_name"`
 		DateOfBirth time.Time `json:"date_of_birth"`
 	}
+
+	UserRoomChatResponse struct {
+		ID       uint64 `json:"id"`
+		UserName string `json:"user_name"`
+	}
 )

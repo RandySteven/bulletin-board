@@ -171,4 +171,31 @@ const (
 		    FOREIGN KEY(task_id) REFERENCES tasks (id)
 		)
 	`
+
+	RoomMigration = `
+		CREATE TABLE IF NOT EXISTS rooms (
+		    id BIGSERIAL PRIMARY KEY,
+		    user_id_1 BIGINT NOT NULL,
+		    user_id_2 BIGINT NOT NULL,
+		    created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+		    updated_at TIMESTAMP NOT NULL DEFAULT NOW(),
+		    deleted_at TIMESTAMP NULL,
+		    FOREIGN KEY(user_id_1) REFERENCES users(id),
+		    FOREIGN KEY(user_id_2) REFERENCES users(id)
+		)
+	`
+
+	ChatMigration = `
+		CREATE TABLE IF NOT EXISTS chats (
+			id BIGSERIAL PRIMARY KEY,
+			user_id BIGINT NOT NULL,
+			room_id BIGINT NOT NULL,
+			message VARCHAR NOT NULL,
+			created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+		    updated_at TIMESTAMP NOT NULL DEFAULT NOW(),
+		    deleted_at TIMESTAMP NULL,
+		    FOREIGN KEY(user_id) REFERENCES users(id),
+		    FOREIGN KEY(room_id) REFERENCES rooms(id)
+		)
+	`
 )

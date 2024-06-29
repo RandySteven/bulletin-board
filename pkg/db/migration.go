@@ -21,6 +21,8 @@ func initTableMigration() []queries.TableMigration {
 		queries.CreditsMigration,
 		queries.RelationMigration,
 		queries.UserTaskMigration,
+		queries.RoomMigration,
+		queries.ChatMigration,
 	}
 }
 
