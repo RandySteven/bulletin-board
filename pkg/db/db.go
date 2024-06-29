@@ -26,6 +26,8 @@ type Repositories struct {
 	UserTaskRepository       repositories.IUserTaskRepository
 	RelationRepository       repositories.IRelationRepository
 	CreditRepository         repositories.ICreditRepository
+	RoomRepository           repositories.IRoomRepository
+	ChatRepository           repositories.IChatRepository
 	UnitOfWork               repositories.UnitOfWork
 	db                       *sql.DB
 }
@@ -66,6 +68,8 @@ func NewRepositories(config *config.Config) (*Repositories, error) {
 		UserTaskRepository:       postgres_repositories.NewUserTaskRepository(db),
 		RelationRepository:       postgres_repositories.NewRelationRepository(db),
 		CreditRepository:         postgres_repositories.NewCreditRepository(db),
+		RoomRepository:           postgres_repositories.NewRoomRepository(db),
+		ChatRepository:           postgres_repositories.NewChatRepository(db),
 		db:                       db,
 	}, nil
 }

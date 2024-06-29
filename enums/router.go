@@ -15,4 +15,6 @@ const (
 	RewardRouter   RouterPrefix = `/rewards`
 	CategoryRouter RouterPrefix = `/categories`
 	CreditRouter   RouterPrefix = `/credits`
+	WebSocket      RouterPrefix = `/ws`
+	RoomRouter     RouterPrefix = `/rooms`
 )

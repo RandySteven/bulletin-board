@@ -177,3 +177,15 @@ func (c *chatUsecase) SendChat(ctx context.Context, request *requests.ChatReques
 }
 
 var _ usecases.IChatUseCase = &chatUsecase{}
+
+func NewChatUsecase(
+	chatRepository repositories.IChatRepository,
+	userRepository repositories.IUserRepository,
+	roomRepository repositories.IRoomRepository,
+) *chatUsecase {
+	return &chatUsecase{
+		chatRepository: chatRepository,
+		userRepository: userRepository,
+		roomRepository: roomRepository,
+	}
+}

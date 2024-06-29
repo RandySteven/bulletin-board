@@ -74,8 +74,7 @@ func (r *roomRepository) Update(ctx context.Context, request *models.Room) (resu
 }
 
 func (c *chatRepository) Save(ctx context.Context, request *models.Chat) (result *uint64, err error) {
-	//TODO implement me
-	panic("implement me")
+	return utils.Save[models.Chat](ctx, c.db, queries.InsertChat, request.RoomID, request.UserID, request.Message)
 }
 
 func (c *chatRepository) FindAll(ctx context.Context) (result []*models.Chat, err error) {

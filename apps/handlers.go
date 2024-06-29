@@ -14,6 +14,7 @@ type Handlers struct {
 	RewardHandler   handlers.IRewardHandler
 	CategoryHandler handlers.ICategoryHandler
 	CreditHandler   handlers.ICreditHandler
+	ChatHandler     handlers.IChatHandler
 }
 
 func NewHandlers(repo *db.Repositories, service *Services) *Handlers {
@@ -26,5 +27,6 @@ func NewHandlers(repo *db.Repositories, service *Services) *Handlers {
 		RewardHandler:   handlers2.NewRewardHandler(usecases.RewardUsecase),
 		CategoryHandler: handlers2.NewCategoryHandler(usecases.CategoryUsecase),
 		CreditHandler:   handlers2.NewCreditHandler(usecases.CreditUsecase),
+		ChatHandler:     handlers2.NewChatHandler(usecases.ChatUsecase),
 	}
 }

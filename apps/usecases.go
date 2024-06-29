@@ -13,6 +13,7 @@ type Usecases struct {
 	RewardUsecase   usecases.IRewardUsecase
 	CategoryUsecase usecases.ICategoryUsecase
 	CreditUsecase   usecases.ICreditUseCase
+	ChatUsecase     usecases.IChatUseCase
 }
 
 func NewUseCases(repo *db.Repositories) *Usecases {
@@ -23,5 +24,6 @@ func NewUseCases(repo *db.Repositories) *Usecases {
 		RewardUsecase:   usecases2.NewRewardUsecase(repo.UnitOfWork, repo.RewardRepository, repo.TaskRepository, repo.UserRepository, repo.UserProfileRepository, repo.CategoryRepository, repo.RewardCategoryRepository, repo.TaskRewardRepository),
 		CategoryUsecase: usecases2.NewCategoryUsecase(repo.CategoryRepository, repo.RewardRepository, repo.RewardCategoryRepository),
 		CreditUsecase:   usecases2.NewCreditUsecase(repo.UserRepository, repo.CreditRepository, repo.UserCreditRepository),
+		ChatUsecase:     usecases2.NewChatUsecase(repo.ChatRepository, repo.UserRepository, repo.RoomRepository),
 	}
 }

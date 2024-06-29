@@ -73,6 +73,15 @@ func NewEndpointRouters(h *Handlers) map[enums.RouterPrefix][]EndpointRouter {
 		*RegisterEndpointRouter("", http.MethodGet, h.CreditHandler.SeeUserCredit),
 	}
 
+	endpointRouters[enums.WebSocket] = []EndpointRouter{
+		*RegisterEndpointRouter("", http.MethodPost, h.ChatHandler.SendMessage),
+	}
+
+	endpointRouters[enums.RoomRouter] = []EndpointRouter{
+		*RegisterEndpointRouter("", http.MethodGet, h.ChatHandler.GetAllRooms),
+		*RegisterEndpointRouter("", http.MethodPost, h.ChatHandler.CreateRoom),
+	}
+
 	return endpointRouters
 }
 
@@ -143,12 +152,22 @@ func (h *Handlers) InitRouter(r *mux.Router) {
 		creditsRouter.HandleFunc(router.path, router.handler).Methods(router.method)
 		router.RouterLog(enums.CreditRouter.ToString())
 	}
+
+	websocket := r.PathPrefix(enums.WebSocket.ToString()).Subrouter()
+	websocket.Use(middlewares.AuthenticationMiddleware)
+	for _, router := range mapRouters[enums.WebSocket] {
+		websocket.HandleFunc(router.path, router.handler)
+		router.RouterLog(enums.WebSocket.ToString())
+	}
+
+	roomRouter := r.PathPrefix(enums.RoomRouter.ToString()).Subrouter()
+	roomRouter.Use(middlewares.AuthenticationMiddleware)
+	for _, router := range mapRouters[enums.RoomRouter] {
+		roomRouter.HandleFunc(router.path, router.handler).Methods(router.method)
+		router.RouterLog(enums.RoomRouter.ToString())
+	}
 }
 
 func (router *EndpointRouter) RouterLog(prefix string) {
-	//blue := color.New(color.FgBlue).SprintFunc()
-	//red := color.New(color.FgRed).SprintFunc()
-	//green := color.New(color.FgGreen).SprintFunc()
-
 	log.Printf("%12s | %4s/ \n", router.method, prefix+router.path)
 }
