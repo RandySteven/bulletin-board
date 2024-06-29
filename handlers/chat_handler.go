@@ -48,7 +48,7 @@ func (c *ChatHandler) GetAllRooms(w http.ResponseWriter, r *http.Request) {
 		utils.ResponseHandler(w, customErr.ErrCode(), "", nil, nil, customErr)
 		return
 	}
-	utils.ResponseHandler(w, http.StatusOK, "", &dataKey, result, customErr)
+	utils.ResponseHandler(w, http.StatusOK, "success get rooms", &dataKey, result, nil)
 }
 
 func (c *ChatHandler) SendMessage(w http.ResponseWriter, r *http.Request) {

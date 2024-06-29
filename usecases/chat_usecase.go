@@ -3,6 +3,7 @@ package usecases
 import (
 	"context"
 	"fmt"
+	"log"
 	"sync"
 	"task_mission/apperror"
 	"task_mission/entities/dtos/requests"
@@ -67,20 +68,28 @@ func (c *chatUsecase) GetAllLoginUserRooms(ctx context.Context) (results []*resp
 	if err != nil {
 		return nil, apperror.NewCustomError(apperror.ErrInternalServer, `failed to get all user rooms`, err)
 	}
-	errCh := make(chan error, len(result))
-	go func() {
-		for _, room := range result {
+	errCh := make(chan error, 1)
+	resultsCh := make(chan *responses.RoomListResponse, len(result))
+	wg := sync.WaitGroup{}
+
+	for _, room := range result {
+		wg.Add(1)
+		go func(room *models.Room) {
+			defer wg.Done()
+
 			user1, err := c.userRepository.Find(ctx, room.UserID1)
 			if err != nil {
 				errCh <- err
 				return
 			}
+
 			user2, err := c.userRepository.Find(ctx, room.UserID2)
 			if err != nil {
 				errCh <- err
 				return
 			}
-			results = append(results, &responses.RoomListResponse{
+
+			resultsCh <- &responses.RoomListResponse{
 				ID: room.ID,
 				User1: &responses.UserRoomChatResponse{
 					ID:       user1.ID,
@@ -90,12 +99,28 @@ func (c *chatUsecase) GetAllLoginUserRooms(ctx context.Context) (results []*resp
 					ID:       user2.ID,
 					UserName: user2.UserName,
 				},
-			})
-		}
-	}()
-	if err := <-errCh; err != nil {
-		return nil, apperror.NewCustomError(apperror.ErrInternalServer, `failed to get all user rooms`, err)
+			}
+		}(room)
 	}
+	go func() {
+		wg.Wait()
+		close(resultsCh)
+		close(errCh)
+	}()
+
+	for res := range resultsCh {
+		results = append(results, res)
+	}
+
+	select {
+	case err := <-errCh:
+		if err != nil {
+			return nil, apperror.NewCustomError(apperror.ErrInternalServer, "failed to get all user rooms", err)
+		}
+	default:
+	}
+
+	log.Println(results)
 	return results, nil
 }
 
