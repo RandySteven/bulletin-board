@@ -3,6 +3,7 @@ package usecases
 import (
 	"context"
 	"fmt"
+	"sync"
 	"task_mission/apperror"
 	"task_mission/entities/dtos/requests"
 	"task_mission/entities/dtos/responses"
@@ -99,11 +100,80 @@ func (c *chatUsecase) GetAllLoginUserRooms(ctx context.Context) (results []*resp
 }
 
 func (c *chatUsecase) GetChatRoomDetail(ctx context.Context, id uint64) (result *responses.RoomResponse, customErr *apperror.CustomError) {
-	return
+	room, err := c.roomRepository.Find(ctx, id)
+	if err != nil {
+		return nil, apperror.NewCustomError(apperror.ErrInternalServer, `failed to get room`, err)
+	}
+	wg := new(sync.WaitGroup)
+	user1 := &models.User{ID: room.UserID1}
+	user2 := &models.User{ID: room.UserID2}
+	errCh := make(chan error, 1)
+	wg.Add(2)
+	go func() {
+		defer wg.Done()
+		user1, err = c.userRepository.Find(ctx, user1.ID)
+		if err != nil {
+			errCh <- err
+			return
+		}
+	}()
+
+	go func() {
+		defer wg.Done()
+		user2, err = c.userRepository.Find(ctx, user2.ID)
+		if err != nil {
+			errCh <- err
+			return
+		}
+	}()
+
+	wg.Wait()
+
+	for err := range errCh {
+		if err != nil {
+			return nil, apperror.NewCustomError(apperror.ErrInternalServer, `failed to get room`, err)
+		}
+	}
+
+	result = &responses.RoomResponse{
+		ID: room.ID,
+		User1: &responses.UserRoomChatResponse{
+			ID:       user1.ID,
+			UserName: user1.UserName,
+		},
+		User2: &responses.UserRoomChatResponse{
+			ID:       user2.ID,
+			UserName: user2.UserName,
+		},
+		CreatedAt: room.CreatedAt,
+	}
+	return result, nil
 }
 
 func (c *chatUsecase) SendChat(ctx context.Context, request *requests.ChatRequest) (result *responses.ChatResponse, customErr *apperror.CustomError) {
-	return
+	chatId, err := c.chatRepository.Save(ctx, &models.Chat{
+		RoomID:  request.RoomID,
+		UserID:  ctx.Value(enums.UserID).(uint64),
+		Message: request.Message,
+	})
+	if err != nil {
+		return nil, apperror.NewCustomError(apperror.ErrInternalServer, `failed to save chat`, err)
+	}
+	chat, err := c.chatRepository.Find(ctx, *chatId)
+	if err != nil {
+		return nil, apperror.NewCustomError(apperror.ErrInternalServer, `failed to get chat`, err)
+	}
+	user, err := c.userRepository.Find(ctx, chat.UserID)
+	if err != nil {
+		return nil, apperror.NewCustomError(apperror.ErrInternalServer, `failed to get user`, err)
+	}
+	result = &responses.ChatResponse{
+		UserName:  user.UserName,
+		Message:   chat.Message,
+		CreatedAt: chat.CreatedAt,
+		UpdatedAt: chat.UpdatedAt,
+	}
+	return result, nil
 }
 
 var _ usecases.IChatUseCase = &chatUsecase{}
