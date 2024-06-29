@@ -5,6 +5,7 @@ const (
 	SelectAllChats  GoQuery = `SELECT * FROM chats`
 	SelectChatsUser GoQuery = `SELECT * FROM chats WHERE user_id = $1`
 	SelectChatsRoom GoQuery = `SELECT * FROM chats WHERE room_id = $1`
+	SelectChatByID  GoQuery = `SELECT * FROM chats WHERE id = $1`
 )
 
 const (

@@ -83,8 +83,12 @@ func (c *chatRepository) FindAll(ctx context.Context) (result []*models.Chat, er
 }
 
 func (c *chatRepository) Find(ctx context.Context, id uint64) (result *models.Chat, err error) {
-	//TODO implement me
-	panic("implement me")
+	result = &models.Chat{}
+	err = utils.FindByID[models.Chat](ctx, c.db, queries.SelectChatByID, id, result)
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
 }
 
 func (c *chatRepository) Delete(ctx context.Context, id uint64) (err error) {
