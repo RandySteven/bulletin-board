@@ -21,4 +21,9 @@ const (
 				(user_id_1 = $2 AND user_id_2 = $1)
 		)
 	`
+	SelectLoginUserRooms GoQuery = `
+		SELECT id, user_id_1, user_id_2, created_at FROM rooms
+		WHERE
+		    user_id_1 = $1 OR user_id_2 = $1
+	`
 )

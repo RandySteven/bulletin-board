@@ -12,6 +12,7 @@ type (
 
 	IRoomRepository interface {
 		IRepository[models.Room]
-		CheckExistsRoom(ctx context.Context, room models.Room) (exist bool, err error)
+		CheckExistsRoom(ctx context.Context, room *models.Room) (exist bool, err error)
+		FindAllUserRooms(ctx context.Context) ([]*models.Room, error)
 	}
 )
