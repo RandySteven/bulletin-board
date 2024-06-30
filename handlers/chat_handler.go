@@ -63,7 +63,7 @@ func (c *ChatHandler) SendMessage(w http.ResponseWriter, r *http.Request) {
 	defer conn.Close()
 
 	clients := make(map[*websocket.Conn]bool)
-	broadcast := make(chan *responses.ChatResponse)
+	broadcast := make(chan *responses.ChatResponse, 10)
 
 	clients[conn] = true
 
@@ -88,11 +88,12 @@ func (c *ChatHandler) SendMessage(w http.ResponseWriter, r *http.Request) {
 		broadcast <- response
 
 		for client := range clients {
-			err := client.WriteJSON(response)
-			if err != nil {
-				client.Close()
-				delete(clients, client)
-			}
+			go func(c *websocket.Conn) {
+				if err := c.WriteJSON(response); err != nil {
+					c.Close()
+					delete(clients, c)
+				}
+			}(client)
 		}
 	}
 
