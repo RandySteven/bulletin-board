@@ -33,10 +33,11 @@ type Repositories struct {
 }
 
 func NewRepositories(config *config.Config) (*Repositories, error) {
-	conn := fmt.Sprintf("postgresql://%s:%s@%s/%s?sslmode=require",
+	conn := fmt.Sprintf("postgresql://%s:%s@%s:%s/%s?sslmode=require",
 		config.Postgres.DbUser,
 		config.Postgres.DbPass,
 		config.Postgres.Host,
+		config.Postgres.Port,
 		config.Postgres.DbName,
 	)
 	log.Println(conn)

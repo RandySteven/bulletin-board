@@ -12,7 +12,7 @@ RUN go mod download && go mod verify
 RUN go mod vendor
 
 COPY . /app
-RUN CGO_ENABLED=0 GOOS=linux go build -o ./bin/bulletin-backend cmd/task_mission/cmd/main.go
+RUN CGO_ENABLED=0 GOOS=linux go build -v -o ./bin/bulletin-backend cmd/task_mission/cmd/main.go
 
 EXPOSE 8888
 ENTRYPOINT ["./bin/bulletin-backend"]

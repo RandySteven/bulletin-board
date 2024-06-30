@@ -35,6 +35,8 @@ services:
       - bulletin-postgres
     networks:
       - app-network
+    profiles:
+      - donotstart
   bulletin-seeding:
     image: bulletin-seeding
     build:
@@ -43,3 +45,5 @@ services:
       - bulletin-postgres
     networks:
       - app-network
+    profiles:
+      - donotstart

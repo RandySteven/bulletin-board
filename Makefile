@@ -42,6 +42,9 @@ run-docker:
 stop-docker:
 	docker compose down
 
+run-docker-migration:
+	docker compose up --build -d bulletin-migration
+
 usecase_mockery: interfaces/usecases/*.go
 	mockery --dir=interfaces/usecases \
            --name=$(shell basename $< -ext) \  # Extract filename without extension
@@ -53,6 +56,8 @@ usecase_mockery: interfaces/usecases/*.go
 test:
 	go test -coverprofile=coverage.out -v ./... && go tool cover -html=coverage.out -o coverage.html
 
+refresh_volume:
+	docker system prune -a
 #
 #MODELNAME := $(shell bash -c 'read -p "Model name : " modelfile; echo $$modelfile')
 #LOWER_FIRST_CHAR := $(shell echo $(MODELNAME) | cut -c1 | tr '[:upper:]' '[:lower:]')

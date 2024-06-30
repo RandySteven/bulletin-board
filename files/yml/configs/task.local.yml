@@ -9,7 +9,7 @@ server:
 
 postgres:
   host: "ep-royal-poetry-a5kuitu4.us-east-2.aws.neon.tech"
-  port: "5432"
+  port: ""
   dbname: "bulletindb"
   dbuser: "bulletindb_owner"
   dbpass: "lDb07joiaytz"

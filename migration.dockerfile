@@ -12,7 +12,7 @@ RUN go mod download && go mod verify
 RUN go mod vendor
 
 COPY . /app
-RUN CGO_ENABLED=0 GOOS=linux go build -o ./bin/bulletin-migration cmd/task_mission/migration/main.go
+RUN CGO_ENABLED=0 GOOS=linux go build -v -o ./bin/bulletin-migration cmd/task_mission/migration/main.go
 
 EXPOSE 8888
 ENTRYPOINT ["./bin/bulletin-migration"]
