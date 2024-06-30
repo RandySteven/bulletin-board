@@ -9,3 +9,4 @@ package.json
 task.local.yml
 coverage.out
 coverage.html
+postgres-data
