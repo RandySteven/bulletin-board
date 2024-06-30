@@ -12,8 +12,8 @@ RUN go mod download && go mod verify
 RUN go mod vendor
 
 COPY . /app
-RUN CGO_ENABLED=0 GOOS=linux go build -o ./bin/bulletin-backend cmd/task_mission/cmd/main.go
+RUN CGO_ENABLED=0 GOOS=linux go build -o ./bin/bulletin-migration cmd/task_mission/migration/main.go
 
 EXPOSE 8888
-ENTRYPOINT ["./bin/bulletin-backend"]
+ENTRYPOINT ["./bin/bulletin-migration"]
 CMD ["-config=/app/files/yml/configs/task.docker.yml"]

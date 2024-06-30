@@ -19,6 +19,8 @@ services:
     image: postgres:latest
     container_name: postgres_bulletin
     restart: unless-stopped
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
     ports:
       - 5432:5432
     environment:
@@ -27,3 +29,17 @@ services:
       - POSTGRES_DB=bulletindb
   bulletin-migration:
     image: bulletin-migration
+    build:
+      dockerfile: migration.dockerfile
+    depends_on:
+      - bulletin-postgres
+    networks:
+      - app-network
+  bulletin-seeding:
+    image: bulletin-seeding
+    build:
+      dockerfile: seeder.dockerfile
+    depends_on:
+      - bulletin-postgres
+    networks:
+      - app-network
