@@ -4,9 +4,10 @@ import (
 	"context"
 	"github.com/google/uuid"
 	"github.com/gorilla/websocket"
+	"log"
 	"net/http"
+	"sync"
 	"task_mission/entities/dtos/requests"
-	"task_mission/entities/dtos/responses"
 	"task_mission/enums"
 	"task_mission/interfaces/handlers"
 	"task_mission/interfaces/usecases"
@@ -63,7 +64,7 @@ func (c *ChatHandler) SendMessage(w http.ResponseWriter, r *http.Request) {
 	defer conn.Close()
 
 	clients := make(map[*websocket.Conn]bool)
-	broadcast := make(chan *responses.ChatResponse, 10)
+	broadcast := make(chan string, 10)
 
 	clients[conn] = true
 
@@ -79,22 +80,33 @@ func (c *ChatHandler) SendMessage(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		response, customErr := c.usecase.SendChat(ctx, &msg)
-		if customErr != nil {
-			conn.WriteJSON(map[string]string{"error": customErr.Error()})
-			continue
-		}
+		var wg sync.WaitGroup
+		wg.Add(2)
 
-		broadcast <- response
+		go func() {
+			defer wg.Done()
+			response, customErr := c.usecase.SendChat(ctx, &msg)
+			if customErr != nil {
+				conn.WriteJSON(map[string]string{"error": customErr.Error()})
+				return
+			}
+			log.Println(response)
+		}()
 
-		for client := range clients {
-			go func(c *websocket.Conn) {
-				if err := c.WriteJSON(response); err != nil {
-					c.Close()
-					delete(clients, c)
-				}
-			}(client)
-		}
+		go func() {
+			defer wg.Done()
+			broadcast <- msg.Message
+			for client := range clients {
+				go func(c *websocket.Conn) {
+					if err := c.WriteJSON(msg.Message); err != nil {
+						c.Close()
+						delete(clients, c)
+					}
+				}(client)
+			}
+		}()
+
+		wg.Wait()
 	}
 
 }
