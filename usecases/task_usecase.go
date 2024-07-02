@@ -303,6 +303,14 @@ func (t *taskUsecase) GetAllTasks(ctx context.Context) (results []*responses.Tas
 	}
 }
 
+func (t *taskUsecase) UpdateTaskExpiryTime(ctx context.Context) (err error) {
+	err = t.taskRepo.UpdateTasksExpiryDate(ctx)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func NewTaskUsecase(
 	taskRepo repositories.ITaskRepository,
 	rewardRepo repositories.IRewardRepository,

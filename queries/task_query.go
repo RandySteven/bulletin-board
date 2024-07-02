@@ -15,4 +15,15 @@ const (
 		FROM tasks
 		WHERE id = $1
 	`
+
+	SelectTasksThatAlreadyExpired = `
+		SELECT * FROM tasks
+		WHERE expired_date <= NOW()
+	`
+
+	UpdateTaskExpiryDate = `
+		UPDATE tasks
+		SET status = 'off'
+		WHERE expired_date <= NOW()
+	`
 )

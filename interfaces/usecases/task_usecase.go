@@ -12,4 +12,5 @@ type ITaskUsecase interface {
 	GetAllTasks(ctx context.Context) (results []*responses.TaskListResponse, customErr *apperror.CustomError)
 	TakeTask(ctx context.Context, taskID uint64) (result *responses.UserTaskResponse, err error)
 	GetTaskDetail(ctx context.Context, taskID uint64) (result *responses.TaskDetailResponse, customErr *apperror.CustomError)
+	UpdateTaskExpiryTime(ctx context.Context) (err error)
 }

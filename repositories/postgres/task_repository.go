@@ -44,6 +44,14 @@ func (t *taskRepository) Update(ctx context.Context, request *models.Task) (resu
 	panic("implement me")
 }
 
+func (t *taskRepository) UpdateTasksExpiryDate(ctx context.Context) (err error) {
+	_, err = t.db.ExecContext(ctx, queries.UpdateTaskExpiryDate)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 var _ repositories.ITaskRepository = &taskRepository{}
 
 func NewTaskRepository(db *sql.DB) *taskRepository {
