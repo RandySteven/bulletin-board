@@ -13,7 +13,7 @@ type (
 	}
 
 	UsecaseDependency struct {
-		taskUsecase usecases.ITaskUsecase
+		TaskUsecase usecases.ITaskUsecase
 	}
 )
 
@@ -26,7 +26,13 @@ func (c *Cron) RunAllJob(ctx context.Context) (err error) {
 }
 
 func (c *Cron) autoUpdateExpiryTime(ctx context.Context) (err error) {
-	return c.usecase.taskUsecase.UpdateTaskExpiryTime(ctx)
+	_, err = c.scheduler.AddFunc("@daily", func() {
+		err = c.usecase.TaskUsecase.UpdateTaskExpiryTime(ctx)
+		if err != nil {
+			return
+		}
+	})
+	return
 }
 
 func NewCron(u UsecaseDependency) *Cron {

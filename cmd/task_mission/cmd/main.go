@@ -7,6 +7,7 @@ import (
 	"task_mission/apps"
 	"task_mission/pkg/config"
 	"task_mission/pkg/db"
+	scheduler2 "task_mission/pkg/scheduler"
 )
 
 func main() {
@@ -43,6 +44,13 @@ func main() {
 	//	return
 	//}
 	//defer shutdown(ctx)
+
+	cron := scheduler2.NewCron(apps.NewSchedulers(repositories))
+	err = cron.RunAllJob(ctx)
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
 
 	handlers := apps.NewHandlers(repositories, services)
 
