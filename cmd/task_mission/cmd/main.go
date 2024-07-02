@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"github.com/gorilla/mux"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"log"
 	"task_mission/apps"
 	"task_mission/pkg/config"
@@ -60,6 +61,7 @@ func main() {
 
 	r = apps.RegisterMiddleware(r)
 
+	r.Handle("/metrics", promhttp.Handler())
 	handlers.InitRouter(r)
 	config.Run(r)
 }

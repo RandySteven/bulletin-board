@@ -10,3 +10,4 @@ task.local.yml
 coverage.out
 coverage.html
 postgres-data
+prometheus.yml
