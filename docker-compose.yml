@@ -15,9 +15,16 @@ services:
       - app-network
     depends_on:
       - bulletin-postgres
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-U", "postman", "-h", "bulletin-postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
   bulletin-postgres:
     image: postgres:latest
-    container_name: postgres_bulletin
+    container_name: bulletin-postgres
+    networks:
+      - app-network
     restart: unless-stopped
     volumes:
       - ./postgres-data:/var/lib/postgresql/data

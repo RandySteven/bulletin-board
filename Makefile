@@ -45,6 +45,9 @@ stop-docker:
 run-docker-migration:
 	docker compose up --build -d bulletin-migration
 
+run-docker-seeder:
+	docker compose up --build -d bulletin-seeding
+
 usecase_mockery: interfaces/usecases/*.go
 	mockery --dir=interfaces/usecases \
            --name=$(shell basename $< -ext) \  # Extract filename without extension

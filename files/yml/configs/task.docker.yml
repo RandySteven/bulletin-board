@@ -8,7 +8,7 @@ server:
     idle: 5
 
 postgres:
-  host: "postgres_bulletin"
+  host: "bulletin-postgres"
   port: "5432"
   dbname: "bulletindb"
   dbuser: "orangganteng"
