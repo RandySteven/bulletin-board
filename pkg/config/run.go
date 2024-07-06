@@ -2,9 +2,11 @@ package config
 
 import (
 	"context"
+	"errors"
 	"flag"
 	"fmt"
 	"github.com/gorilla/mux"
+	"github.com/rs/cors"
 	"log"
 	"net/http"
 	"os"
@@ -38,15 +40,16 @@ func (c *Config) Run(r *mux.Router) {
 	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
 	defer stop()
 
+	corsHandler := cors.AllowAll().Handler(r)
 	srv := &http.Server{
 		Addr:         c.Server.Host + ":" + c.Server.Port,
-		Handler:      r,
+		Handler:      corsHandler,
 		ReadTimeout:  c.Server.Timeout.Read * time.Second,
 		WriteTimeout: c.Server.Timeout.Write * time.Second,
 		IdleTimeout:  c.Server.Timeout.Idle * time.Second,
 	}
 	go func() {
-		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+		if err := srv.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
 			log.Fatalf("listen: %s\n", err)
 		}
 	}()
