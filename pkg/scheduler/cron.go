@@ -41,6 +41,7 @@ func (c *Cron) autoUpdateExpiryTime(ctx context.Context) (err error) {
 	_, err = c.scheduler.AddFunc("@hourly", func() {
 		err = c.usecase.TaskUsecase.UpdateTaskExpiryTime(ctx)
 		if err != nil {
+			log.Printf("update task expiry time failed: %v", err)
 			return
 		}
 		log.Println("this expiry time is ", time.Now())
