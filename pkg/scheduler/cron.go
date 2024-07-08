@@ -46,6 +46,10 @@ func (c *Cron) autoUpdateExpiryTime(ctx context.Context) (err error) {
 		}
 		log.Println("this expiry time is ", time.Now())
 	})
+	if err != nil {
+		log.Println("error curr : ", err)
+		return err
+	}
 	return
 }
 

@@ -6,6 +6,7 @@ import (
 	"github.com/gorilla/mux"
 	"net/http"
 	"strconv"
+	"task_mission/entities/dtos/params"
 	"task_mission/entities/dtos/requests"
 	"task_mission/enums"
 	"task_mission/interfaces/handlers"
@@ -64,11 +65,13 @@ func (t *TaskHandler) CreateTaskHandler(w http.ResponseWriter, r *http.Request) 
 func (t *TaskHandler) GetAllTasksHandler(w http.ResponseWriter, r *http.Request) {
 	utils.ContentType(w, "application/json")
 	var (
-		rID     = uuid.NewString()
-		ctx     = context.WithValue(r.Context(), enums.RequestID, rID)
-		dataKey = `tasks`
+		rID        = uuid.NewString()
+		ctx        = context.WithValue(r.Context(), enums.RequestID, rID)
+		dataKey    = `tasks`
+		queryParam = r.URL.Query()
 	)
-	result, err := t.taskUsecase.GetAllTasks(ctx)
+	taskParam := params.NewTaskParam(queryParam)
+	result, err := t.taskUsecase.GetAllTasks(ctx, taskParam)
 	if err != nil {
 		utils.ResponseHandler(w, err.ErrCode(), `failed to get all tasks`, nil, nil, err)
 		return

@@ -1,19 +1,30 @@
 package queries
 
+import "fmt"
+
 type (
-	GoQuery        string
-	TableMigration string
-	DropTable      string
+	AggregateQuery struct {
+		Field     string
+		Operation AggregateOperation
+	}
+
+	AggregateOperation struct {
+		Operational string
+		Value       any
+	}
+
+	PaginationQuery struct {
+		Limit  int
+		Offset int
+	}
 )
 
-func (d DropTable) ToString() string {
-	return string(d)
+func (query AggregateQuery) ToString() string {
+	queryStr := fmt.Sprintf("%s %s %s ", query.Field, query.Operation.Operational, query.Operation.Value)
+	return queryStr
 }
 
-func (t TableMigration) ToString() string {
-	return string(t)
-}
-
-func (q GoQuery) ToString() string {
-	return string(q)
+func (query PaginationQuery) ToString() string {
+	queryStr := fmt.Sprintf("limit %d offset %d", query.Limit, query.Offset)
+	return queryStr
 }

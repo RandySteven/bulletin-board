@@ -6,6 +6,7 @@ import (
 	"log"
 	"sync"
 	"task_mission/apperror"
+	"task_mission/entities/dtos/params"
 	"task_mission/entities/dtos/requests"
 	"task_mission/entities/dtos/responses"
 	"task_mission/entities/models"
@@ -254,7 +255,7 @@ func (t *taskUsecase) CreateTask(ctx context.Context, request *requests.CreateTa
 	return result, nil
 }
 
-func (t *taskUsecase) GetAllTasks(ctx context.Context) (results []*responses.TaskListResponse, customErr *apperror.CustomError) {
+func (t *taskUsecase) GetAllTasks(ctx context.Context, queryParam *params.TaskParam) (results []*responses.TaskListResponse, customErr *apperror.CustomError) {
 	tasks, err := t.taskRepo.FindAll(ctx)
 	if err != nil {
 		return nil, apperror.NewCustomError(apperror.ErrInternalServer, `failed to get all tasks`, err)
