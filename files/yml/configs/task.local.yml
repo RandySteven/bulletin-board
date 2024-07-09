@@ -13,6 +13,7 @@ postgres:
   dbname: "bulletindb"
   dbuser: "bulletindb_owner"
   dbpass: "lDb07joiaytz"
+  sslmode: "require"
 
 redis:
   host: ""

@@ -16,11 +16,12 @@ type (
 		} `yaml:"server"`
 
 		Postgres struct {
-			Host   string `yaml:"host"`
-			Port   string `yaml:"port"`
-			DbName string `yaml:"dbname"`
-			DbUser string `yaml:"dbuser"`
-			DbPass string `yaml:"dbpass"`
+			Host    string `yaml:"host"`
+			Port    string `yaml:"port"`
+			DbName  string `yaml:"dbname"`
+			DbUser  string `yaml:"dbuser"`
+			DbPass  string `yaml:"dbpass"`
+			SslMode string `yaml:"sslmode"`
 		} `yaml:"postgres"`
 
 		Redis struct {

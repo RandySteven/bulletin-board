@@ -13,3 +13,4 @@ postgres:
   dbname: "bulletindb"
   dbuser: "orangganteng"
   dbpass: "xixixi"
+  sslmode: "disable"

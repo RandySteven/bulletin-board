@@ -6,6 +6,7 @@ type (
 	GoQuery        string
 	TableMigration string
 	DropTable      string
+
 	AggregateQuery struct {
 		Field     string
 		Operation AggregateOperation
@@ -19,6 +20,11 @@ type (
 	PaginationQuery struct {
 		Limit  int
 		Offset int
+	}
+
+	GetQuery struct {
+		Aggregate  *AggregateQuery
+		Pagination *PaginationQuery
 	}
 )
 

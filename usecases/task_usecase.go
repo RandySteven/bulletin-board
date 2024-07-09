@@ -256,6 +256,7 @@ func (t *taskUsecase) CreateTask(ctx context.Context, request *requests.CreateTa
 }
 
 func (t *taskUsecase) GetAllTasks(ctx context.Context, queryParam *params.TaskParam) (results []*responses.TaskListResponse, customErr *apperror.CustomError) {
+	log.Println(queryParam)
 	tasks, err := t.taskRepo.FindAll(ctx)
 	if err != nil {
 		return nil, apperror.NewCustomError(apperror.ErrInternalServer, `failed to get all tasks`, err)
@@ -267,8 +268,10 @@ func (t *taskUsecase) GetAllTasks(ctx context.Context, queryParam *params.TaskPa
 		taskReward = &models.TaskReward{}
 		errCh      = make(chan error, len(tasks))
 	)
+
+	wg.Add(len(tasks))
+
 	for _, task := range tasks {
-		wg.Add(1)
 
 		go func(task *models.Task) {
 			defer wg.Done()

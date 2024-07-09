@@ -11,14 +11,16 @@ type TaskParam struct {
 	Description string
 	Status      enums.TaskStatus
 	ExpiredDate time.Time
+	PaginationParam
 }
 
 func NewTaskParam(queryParam url.Values) *TaskParam {
 	expiredDate, _ := time.Parse("2006-01-02", queryParam.Get("expiredDate"))
 	return &TaskParam{
-		Title:       queryParam.Get("title"),
-		Description: queryParam.Get("description"),
-		Status:      enums.TaskStatus(queryParam.Get("status")),
-		ExpiredDate: expiredDate,
+		Title:           queryParam.Get("title"),
+		Description:     queryParam.Get("description"),
+		Status:          enums.TaskStatus(queryParam.Get("status")),
+		ExpiredDate:     expiredDate,
+		PaginationParam: GetPagination(queryParam),
 	}
 }

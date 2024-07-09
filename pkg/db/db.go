@@ -36,11 +36,12 @@ func NewRepositories(config *config.Config) (*Repositories, error) {
 	if config.Postgres.Port != "" {
 		config.Postgres.Host = config.Postgres.Host + ":" + config.Postgres.Port
 	}
-	conn := fmt.Sprintf("postgresql://%s:%s@%s/%s?sslmode=disable",
+	conn := fmt.Sprintf("postgresql://%s:%s@%s/%s?sslmode=%s",
 		config.Postgres.DbUser,
 		config.Postgres.DbPass,
 		config.Postgres.Host,
 		config.Postgres.DbName,
+		config.Postgres.SslMode,
 	)
 	log.Println(conn)
 	db, err := sql.Open("postgres", conn)

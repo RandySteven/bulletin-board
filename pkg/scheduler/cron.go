@@ -4,9 +4,6 @@ import (
 	"context"
 	"github.com/robfig/cron/v3"
 	"log"
-	"os"
-	"os/signal"
-	"syscall"
 	"task_mission/interfaces/usecases"
 	"time"
 )
@@ -23,16 +20,12 @@ type (
 )
 
 func (c *Cron) RunAllJob(ctx context.Context) (err error) {
-	defer c.scheduler.Stop()
+	//defer c.scheduler.Stop()
 	err = c.autoUpdateExpiryTime(ctx)
 	if err != nil {
-		return err
+		log.Println(err)
 	}
 	go c.scheduler.Start()
-
-	sig := make(chan os.Signal, 1)
-	signal.Notify(sig, syscall.SIGINT, syscall.SIGTERM)
-	<-sig
 
 	return nil
 }
