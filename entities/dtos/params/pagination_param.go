@@ -22,6 +22,10 @@ func (pagination PaginationParam) GetLimitOffset() (limit int, offset int) {
 	if pagination.Page == 0 || pagination.Page == 1 {
 		return limit, offset
 	}
-	offset = (limit * pagination.Page) - limit
+	offset = offsetCalculation(limit, pagination.Page)
 	return limit, offset
+}
+
+func offsetCalculation(limit, page int) int {
+	return (limit * page) - limit
 }
