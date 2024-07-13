@@ -24,6 +24,6 @@ const (
 	UpdateTaskExpiryDate = `
 		UPDATE tasks
 			SET status = 'off', updated_at = NOW()
-		WHERE expired_date <= NOW() AND status = 'on'
+		WHERE expired_date < NOW() AND status = 'open'
 	`
 )
