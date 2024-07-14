@@ -55,15 +55,16 @@ services:
       - app-network
     profiles:
       - donotstart
-
-nginx:
-  image: nginx:latest
-  volumes:
-    - ./nginx-conf:/etc/nginx/nginx.conf:ro
-  depends_on:
-    - bulletin-app
-  ports:
-    - 4040:4040
+  bulletin-nginx:
+    image: nginx:latest
+    build:
+      dockerfile: nginx.dockerfile
+    volumes:
+      - ./nginx-conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - bulletin-app
+    ports:
+      - 4040:4040
 
 volumes:
   postgres-data:
