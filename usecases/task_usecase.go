@@ -172,7 +172,6 @@ func (t *taskUsecase) CreateTask(ctx context.Context, request *requests.CreateTa
 			return
 		}
 		err = t.uow.Commit()
-
 	}()
 	uId := ctx.Value(enums.UserID).(uint64)
 	user, err := t.userRepo.Find(ctx, uId)
