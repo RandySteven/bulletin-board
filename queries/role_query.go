@@ -17,5 +17,6 @@ const (
 	SelectAllRoles = `
 		SELECT id, role, created_at, updated_at, deleted_at
 		FROM roles
+		WHERE deleted_at IS NULL
 	`
 )
